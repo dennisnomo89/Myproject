@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext'
 import Layout from './components/Layout'
 import { Loading } from './components/ui'
 import Login from './pages/Login'
+import ResetPassword, { ForgotPassword } from './pages/ResetPassword'
 import Dashboard from './pages/Dashboard'
 import Students from './pages/Students'
 import StudentDetail from './pages/StudentDetail'
@@ -35,6 +36,8 @@ export default function App() {
   if (!user) {
     return (
       <Routes>
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<Login />} />
       </Routes>
     )

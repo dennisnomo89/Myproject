@@ -465,6 +465,82 @@ describe('backups', () => {
   });
 });
 
+describe('password reset and sessions', () => {
+  const email = 'reset.tester@gvma.test';
+  const loginAs = (password) => request(app).post('/api/auth/login').send({ email, password });
+  const tokenFromLatestEmail = async () => {
+    const mail = await EmailLog.findOne({ where: { to: email, event: 'password_reset' }, order: [['id', 'DESC']] });
+    return mail && mail.text.match(/reset-password\?token=([a-f0-9]+)/)[1];
+  };
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  beforeAll(async () => {
+    await api('admin').post('/api/users', { fullName: 'Reset Tester', email, password: 'Original123', role: 'parent' }).expect(201);
+  });
+
+  test('forgot-password gives the same answer for unknown emails', async () => {
+    const known = await request(app).post('/api/auth/forgot-password').send({ email });
+    const unknown = await request(app).post('/api/auth/forgot-password').send({ email: 'nobody@gvma.test' });
+    expect(known.status).toBe(200);
+    expect(unknown.body).toEqual(known.body);
+    expect(await EmailLog.count({ where: { to: 'nobody@gvma.test' } })).toBe(0);
+    expect(await tokenFromLatestEmail()).toMatch(/^[a-f0-9]{64}$/);
+  });
+
+  test('a reset link sets a new password, works once, and signs out old sessions', async () => {
+    const oldSession = (await loginAs('Original123')).body.token;
+    await sleep(1100); // tokens record their issue time in whole seconds
+    await request(app).post('/api/auth/forgot-password').send({ email });
+    const token = await tokenFromLatestEmail();
+
+    expect((await request(app).post('/api/auth/reset-password').send({ token, password: 'short' })).status).toBe(400);
+    const ok = await request(app).post('/api/auth/reset-password').send({ token, password: 'BrandNew123' });
+    expect(ok.status).toBe(200);
+
+    expect((await loginAs('Original123')).status).toBe(401);
+    expect((await loginAs('BrandNew123')).status).toBe(200);
+    expect((await request(app).post('/api/auth/reset-password').send({ token, password: 'Another123' })).status).toBe(400);
+    const stale = await request(app).get('/api/auth/me').set('Authorization', `Bearer ${oldSession}`);
+    expect(stale.status).toBe(401);
+    expect(stale.body.message).toMatch(/password was changed/);
+  });
+
+  test('expired and made-up tokens are rejected', async () => {
+    await request(app).post('/api/auth/forgot-password').send({ email });
+    const token = await tokenFromLatestEmail();
+    const { PasswordReset } = require('../src/models');
+    await PasswordReset.update({ expiresAt: new Date(Date.now() - 1000) }, { where: {} });
+    expect((await request(app).post('/api/auth/reset-password').send({ token, password: 'Whatever123' })).status).toBe(400);
+    expect((await request(app).post('/api/auth/reset-password').send({ token: 'abc', password: 'Whatever123' })).status).toBe(400);
+  });
+
+  test('reset requests are limited to 3 per hour', async () => {
+    const { PasswordReset } = require('../src/models');
+    const user = await User.findOne({ where: { email } });
+    await PasswordReset.destroy({ where: { UserId: user.id } });
+    for (let i = 0; i < 5; i += 1) await request(app).post('/api/auth/forgot-password').send({ email });
+    expect(await PasswordReset.count({ where: { UserId: user.id } })).toBe(3);
+  });
+
+  test('changing your password keeps this session but signs out others', async () => {
+    const other = (await loginAs('BrandNew123')).body.token;
+    await sleep(1100);
+    const mine = (await loginAs('BrandNew123')).body.token;
+    const res = await request(app).post('/api/auth/change-password').set('Authorization', `Bearer ${mine}`)
+      .send({ currentPassword: 'BrandNew123', newPassword: 'Changed1234' });
+    expect(res.status).toBe(200);
+    expect((await request(app).get('/api/auth/me').set('Authorization', `Bearer ${res.body.token}`)).status).toBe(200);
+    expect((await request(app).get('/api/auth/me').set('Authorization', `Bearer ${other}`)).status).toBe(401);
+  });
+
+  test('refresh issues a new working token', async () => {
+    const res = await api('ada').post('/api/auth/refresh');
+    expect(res.status).toBe(200);
+    expect((await request(app).get('/api/auth/me').set('Authorization', `Bearer ${res.body.token}`)).body.email).toBe('ada.teacher@gvma.test');
+    expect((await request(app).post('/api/auth/refresh')).status).toBe(401);
+  });
+});
+
 describe('dashboard', () => {
   test('returns role-specific data', async () => {
     expect((await api('admin').get('/api/dashboard')).body.stats.students).toBe(await Student.count({ where: { status: 'active' } }));

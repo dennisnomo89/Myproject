@@ -12,6 +12,8 @@ const User = sequelize.define('User', {
   phone: DataTypes.STRING(20),
   isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
   emailNotifications: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
+  // Login tokens issued before this time are rejected, so a password change logs out other sessions.
+  passwordChangedAt: DataTypes.DATE,
 }, {
   defaultScope: { attributes: { exclude: ['passwordHash'] } },
   scopes: { withPassword: { attributes: {} } },
@@ -137,6 +139,13 @@ const Message = sequelize.define('Message', {
   body: { type: DataTypes.TEXT, allowNull: false, validate: { notEmpty: true, len: [1, 5000] } },
 }, { updatedAt: false });
 
+// One-time password reset link. Only a hash of the token is stored, so the database alone can't be used to reset passwords.
+const PasswordReset = sequelize.define('PasswordReset', {
+  tokenHash: { type: DataTypes.STRING(64), allowNull: false, unique: true },
+  expiresAt: { type: DataTypes.DATE, allowNull: false },
+  usedAt: DataTypes.DATE,
+}, { tableName: 'password_resets', updatedAt: false });
+
 // Every email the system sends (or, in development, would have sent).
 const EmailLog = sequelize.define('EmailLog', {
   event: { type: DataTypes.STRING(40), allowNull: false }, // results_published, fee_reminder, ...
@@ -203,6 +212,9 @@ Conversation.hasMany(Message, { onDelete: 'CASCADE' });
 Message.belongsTo(Conversation);
 Message.belongsTo(User, { as: 'sender', foreignKey: 'senderId' });
 
+User.hasMany(PasswordReset, { onDelete: 'CASCADE' });
+PasswordReset.belongsTo(User);
+
 module.exports = {
   sequelize,
   ROLES,
@@ -229,4 +241,5 @@ module.exports = {
   EVENT_CATEGORIES,
   Conversation,
   Message,
+  PasswordReset,
 };

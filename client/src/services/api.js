@@ -3,6 +3,16 @@ const TOKEN_KEY = 'gvma_token'
 export const getToken = () => localStorage.getItem(TOKEN_KEY)
 export const setToken = (token) => (token ? localStorage.setItem(TOKEN_KEY, token) : localStorage.removeItem(TOKEN_KEY))
 
+// Expiry time (ms) read from a JWT's payload, or null if it can't be read. Not a security check — the server verifies tokens.
+export function tokenExpiry(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')))
+    return payload.exp ? payload.exp * 1000 : null
+  } catch {
+    return null
+  }
+}
+
 // Called when the server rejects the token, so the app can return to the login page.
 let onUnauthorized = () => {}
 export const setUnauthorizedHandler = (fn) => { onUnauthorized = fn }

@@ -10,7 +10,8 @@ module.exports = {
   env,
   port: Number(process.env.PORT) || 5000,
   jwtSecret: process.env.JWT_SECRET || 'dev-only-secret-change-me',
-  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '8h',
+  // Sessions end after this much inactivity: the web app refreshes the token while the user is active.
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '30m',
   clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
   // Base URL used for links inside emails.
   appUrl: process.env.APP_URL || process.env.CLIENT_ORIGIN || 'http://localhost:5173',

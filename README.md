@@ -8,7 +8,7 @@ The full requirements are in the [Software Requirements Specification](docs/SRS_
 
 | Module | What it covers |
 |---|---|
-| Authentication | Secure login, password reset, role-based access (Admin, Teacher, Bursar, Parent) |
+| Authentication | Secure login with role-based access (Admin, Teacher, Bursar, Parent). "Forgot password" emails a one-time reset link that expires after 1 hour, with at most 3 requests an hour. Users are signed out after 30 minutes of inactivity, and changing a password signs out the account's other devices. |
 | Students | Admission, enrolment, profiles, linking pupils to parents/guardians |
 | Staff | Teacher and non-teaching staff records, class/subject assignment |
 | Academics | Sessions, terms, classes, subjects |
@@ -140,7 +140,7 @@ All endpoints are under `/api` and, except login, need an `Authorization: Bearer
 
 | Area | Endpoints |
 |---|---|
-| Auth | `POST /auth/login`, `GET/PATCH /auth/me`, `POST /auth/change-password` |
+| Auth | `POST /auth/login`, `POST /auth/refresh`, `GET/PATCH /auth/me`, `POST /auth/change-password`, `POST /auth/forgot-password`, `POST /auth/reset-password` |
 | Users | `GET/POST /users`, `PATCH /users/:id` |
 | Sessions/terms | `GET/POST /sessions`, `GET /terms/current`, `PATCH /terms/:id`, `POST /terms/:id/set-current` |
 | Classes/subjects | `GET/POST /classes`, `PATCH/DELETE /classes/:id`, `POST/DELETE /classes/:id/subjects`, `GET/POST/DELETE /subjects` |
