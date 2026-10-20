@@ -1,0 +1,37 @@
+{
+  "name": "gvma-sms-server",
+  "version": "0.1.0",
+  "description": "REST API for the Global Virgins Montessori Academy School Management Software",
+  "main": "src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "seed": "node src/seed.js",
+    "test": "jest --runInBand"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.8",
+    "express": "^4.22.3",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.12.1",
+    "mysql2": "^3.24.6",
+    "nodemailer": "^10.1.7",
+    "sequelize": "^6.37.8",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.3.1"
+  }
+}
