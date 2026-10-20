@@ -143,10 +143,10 @@ Scores are CA out of 40 and exam out of 60. Grades: A 70+, B 60–69, C 50–59,
 
 | Name | Matric No. | Role | GitHub |
 |---|---|---|---|
-| [Name 1] | [Matric No.] | Project lead / Backend | @username |
-| [Name 2] | [Matric No.] | Frontend | @username |
-| [Name 3] | [Matric No.] | Database | @username |
-| [Name 4] | [Matric No.] | Testing / Documentation | @username |
+| Samuel Batu | [Matric No.] | [Role] | @username |
+| Fred Wosornu | [Matric No.] | [Role] | @username |
+| Seth Mensah Quaye | [Matric No.] | [Role] | @username |
+| dennisnomo89 | [Matric No.] | [Role] | @dennisnomo89 |
 
 ## Contributing
 
