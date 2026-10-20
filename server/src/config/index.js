@@ -14,6 +14,14 @@ module.exports = {
   clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
   // Base URL used for links inside emails.
   appUrl: process.env.APP_URL || process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  backup: {
+    // Where backup files are kept, how often the automatic backup runs, and how many automatic ones to keep.
+    dir: env === 'test'
+      ? path.join(require('os').tmpdir(), `gvma-test-backups-${process.pid}`)
+      : path.resolve(SERVER_ROOT, process.env.BACKUP_DIR || './backups'),
+    intervalHours: Number(process.env.BACKUP_INTERVAL_HOURS) || 24,
+    keep: Number(process.env.BACKUP_KEEP) || 14,
+  },
   mail: {
     // Without SMTP_HOST, emails are only recorded in the email log (development mode).
     host: process.env.SMTP_HOST || '',

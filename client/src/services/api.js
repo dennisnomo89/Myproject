@@ -29,6 +29,23 @@ export const api = {
   del: (url) => request('DELETE', url),
 }
 
+// Downloads a protected file (the token can't go in a plain link) and saves it under `filename`.
+export async function downloadFile(url, filename) {
+  const res = await fetch(`/api${url}`, { headers: { Authorization: `Bearer ${getToken()}` } })
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}))
+    throw new Error(data.message || `Download failed (${res.status})`)
+  }
+  const blobUrl = URL.createObjectURL(await res.blob())
+  const a = document.createElement('a')
+  a.href = blobUrl
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 1000)
+}
+
 // Builds a query string, skipping empty values.
 export const qs = (params) => {
   const p = new URLSearchParams(Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== ''))

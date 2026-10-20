@@ -20,6 +20,7 @@ The full requirements are in the [Software Requirements Specification](docs/SRS_
 | Communication | Announcements, plus private messages between parents and staff. Teachers can message parents of pupils in their classes; parents can message their children's teachers and the school office. There's an unread badge in the sidebar, and new messages are emailed. |
 | Email notifications | Parents are emailed when results are published, when a payment is recorded, when the bursar sends fee reminders, and for announcements. Each user can opt out on their profile. |
 | Reports | Enrolment, attendance, performance and fee-collection reports |
+| Data backup | Automatic daily backups (the newest 14 are kept), "Back up now", download, and restore with typed confirmation. A safety backup is taken automatically before every restore. |
 
 ## Tech stack
 
@@ -119,6 +120,16 @@ With no SMTP settings, emails are only recorded, and admins can read them on the
 | An announcement is posted (with "Also send by email" ticked) | Everyone in the chosen audience, except the poster |
 | A message is sent | The other person in the conversation |
 
+### Data backup
+
+Admins manage backups on the **Data Backup** page.
+
+- **Automatic:** while the server runs, it backs up the whole database every `BACKUP_INTERVAL_HOURS` (default 24) and keeps the newest `BACKUP_KEEP` (default 14). Manual and "before restore" backups are never deleted automatically.
+- **Format:** each backup is a gzipped JSON file in `server/backups/` (set `BACKUP_DIR` to change this). Because it's JSON rather than a database file, the same backup restores on SQLite or MySQL.
+- **Restore:** replaces all data with the backup's. You must type `RESTORE` to confirm, and the current data is saved as a "Before restore" backup first, so a mistaken restore can be undone.
+- **Keep copies elsewhere:** download backups regularly and store them away from the server, for example on an external drive or a cloud drive. A backup that sits only on the server is lost if the server's disk fails.
+- **Handle with care:** backups contain pupils' personal data and password hashes. Never commit them to Git (`backups/` is already in `.gitignore`), and store downloaded copies securely.
+
 ### Using MySQL
 
 In `server/.env`, set `DB_DIALECT=mysql` and fill in `DB_HOST`, `DB_NAME`, `DB_USER` and `DB_PASSWORD`. Create the empty database first. Tables are created automatically when the server starts.
@@ -141,6 +152,7 @@ All endpoints are under `/api` and, except login, need an `Authorization: Bearer
 | Events | `GET /events?from=&to=`, `POST /events`, `PATCH/DELETE /events/:id` |
 | Messages | `GET /messages/contacts`, `GET /messages/unread-count`, `GET/POST /messages`, `GET/POST /messages/:id` |
 | Notifications | `POST /fees/reminders`, `GET /email-log` |
+| Backups | `GET/POST /backups`, `GET /backups/:name/download`, `POST /backups/:name/restore`, `DELETE /backups/:name` |
 | Other | `GET /dashboard`, `GET /audit-log`, `GET/POST/DELETE /announcements` |
 
 Scores are CA out of 40 and exam out of 60. Grades: A 70+, B 60–69, C 50–59, D 45–49, E 40–44, F below 40 (see `server/src/utils/grading.js`).

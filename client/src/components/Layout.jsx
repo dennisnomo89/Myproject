@@ -21,6 +21,7 @@ const NAV = [
   { to: '/settings', text: 'Sessions & Terms', roles: ['admin'] },
   { to: '/email-log', text: 'Email Log', roles: ['admin'] },
   { to: '/audit-log', text: 'Audit Log', roles: ['admin'] },
+  { to: '/backups', text: 'Data Backup', roles: ['admin'] },
 ]
 
 const UNREAD_POLL_MS = 60_000

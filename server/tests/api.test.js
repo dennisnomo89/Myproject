@@ -20,6 +20,7 @@ const api = (who) => ({
   get: (url) => request(app).get(url).set('Authorization', `Bearer ${tokens[who]}`),
   post: (url, body) => request(app).post(url).set('Authorization', `Bearer ${tokens[who]}`).send(body),
   patch: (url, body) => request(app).patch(url).set('Authorization', `Bearer ${tokens[who]}`).send(body),
+  del: (url) => request(app).delete(url).set('Authorization', `Bearer ${tokens[who]}`),
 });
 
 beforeAll(async () => {
@@ -385,9 +386,88 @@ describe('messages', () => {
   });
 });
 
+describe('backups', () => {
+  const fs = require('fs');
+  const { backup: backupConfig } = require('../src/config');
+
+  afterAll(() => fs.rmSync(backupConfig.dir, { recursive: true, force: true }));
+
+  test('only admins can manage backups', async () => {
+    expect((await api('bursar').get('/api/backups')).status).toBe(403);
+    expect((await api('ada').post('/api/backups')).status).toBe(403);
+  });
+
+  test('back up, change data, restore: data returns to the backup state', async () => {
+    const created = await api('admin').post('/api/backups');
+    expect(created.status).toBe(201);
+    expect(created.body.name).toMatch(/-manual\.json\.gz$/);
+    expect(created.body.tables.Student).toBe(6);
+
+    const studentsBefore = await Student.count();
+    const chiamaka = await Student.findOne({ where: { firstName: 'Chiamaka' } });
+    const createdAtBefore = chiamaka.createdAt.toISOString();
+
+    // Change things after the backup.
+    await api('admin').post('/api/students', { admissionNo: 'GVMA/2026/099', firstName: 'New', lastName: 'Pupil', gender: 'male' }).expect(201);
+    await api('admin').patch(`/api/students/${chiamaka.id}`, { firstName: 'Changed' }).expect(200);
+
+    // Restore needs the typed confirmation.
+    expect((await api('admin').post(`/api/backups/${created.body.name}/restore`, {})).status).toBe(400);
+    const restored = await api('admin').post(`/api/backups/${created.body.name}/restore`, { confirm: 'RESTORE' });
+    expect(restored.status).toBe(200);
+    expect(restored.body.safetyBackup).toMatch(/-pre-restore\.json\.gz$/);
+
+    expect(await Student.count()).toBe(studentsBefore);
+    const after = await Student.findByPk(chiamaka.id);
+    expect(after.firstName).toBe('Chiamaka');
+    expect(after.createdAt.toISOString()).toBe(createdAtBefore);
+    // Password hashes came back too, so people can still log in.
+    expect((await request(app).post('/api/auth/login').send({ email: 'parent@gvma.test', password: DEMO_PASSWORD })).status).toBe(200);
+    // New records still get fresh ids after a restore.
+    await api('admin').post('/api/students', { admissionNo: 'GVMA/2026/100', firstName: 'After', lastName: 'Restore', gender: 'female' }).expect(201);
+  });
+
+  test('lists, downloads and deletes backups', async () => {
+    const list = await api('admin').get('/api/backups');
+    expect(list.body.schedule.intervalHours).toBe(24);
+    const kinds = list.body.backups.map((b) => b.kind);
+    expect(kinds).toEqual(expect.arrayContaining(['manual', 'pre-restore']));
+
+    const { name } = list.body.backups[0];
+    const file = await api('admin').get(`/api/backups/${name}/download`).buffer(true).parse((res, cb) => {
+      const chunks = [];
+      res.on('data', (c) => chunks.push(c));
+      res.on('end', () => cb(null, Buffer.concat(chunks)));
+    });
+    expect(file.status).toBe(200);
+    expect(file.body.subarray(0, 2)).toEqual(Buffer.from([0x1f, 0x8b])); // gzip header
+
+    expect((await api('admin').del(`/api/backups/${name}`)).status).toBe(204);
+    expect((await api('admin').get('/api/backups')).body.backups.map((b) => b.name)).not.toContain(name);
+  });
+
+  test('rejects names that are not backup files', async () => {
+    expect((await api('admin').get('/api/backups/..%2F..%2Fpackage.json/download')).status).toBe(400);
+    expect((await api('admin').del('/api/backups/not-a-backup.txt')).status).toBe(400);
+  });
+
+  test('automatic backups keep only the newest ones', async () => {
+    const backupUtil = require('../src/utils/backup');
+    const keep = backupConfig.keep;
+    backupConfig.keep = 2;
+    for (let i = 0; i < 4; i += 1) {
+      await backupUtil.createBackup('auto');
+      await new Promise((r) => setTimeout(r, 5)); // distinct timestamps in the file names
+    }
+    const autos = (await backupUtil.listBackups()).filter((b) => b.kind === 'auto');
+    expect(autos).toHaveLength(2);
+    backupConfig.keep = keep;
+  });
+});
+
 describe('dashboard', () => {
   test('returns role-specific data', async () => {
-    expect((await api('admin').get('/api/dashboard')).body.stats.students).toBe(6);
+    expect((await api('admin').get('/api/dashboard')).body.stats.students).toBe(await Student.count({ where: { status: 'active' } }));
     expect((await api('parent').get('/api/dashboard')).body.children).toHaveLength(2);
     expect((await api('ada').get('/api/dashboard')).body.classes[0].isClassTeacher).toBe(true);
   });

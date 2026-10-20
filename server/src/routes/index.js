@@ -13,6 +13,7 @@ const announcements = require('../controllers/announcementController');
 const dashboard = require('../controllers/dashboardController');
 const timetable = require('../controllers/timetableController');
 const messages = require('../controllers/messageController');
+const backups = require('../controllers/backupController');
 
 const router = express.Router();
 const admin = authorize('admin');
@@ -106,6 +107,13 @@ router.get('/messages', h(messages.listConversations));
 router.post('/messages', h(messages.startConversation));
 router.get('/messages/:id', h(messages.getConversation));
 router.post('/messages/:id', h(messages.reply));
+
+// Data backup (admin only)
+router.get('/backups', admin, h(backups.list));
+router.post('/backups', admin, h(backups.create));
+router.get('/backups/:name/download', admin, h(backups.download));
+router.post('/backups/:name/restore', admin, h(backups.restore));
+router.delete('/backups/:name', admin, h(backups.remove));
 
 // Announcements
 router.get('/announcements', h(announcements.list));
