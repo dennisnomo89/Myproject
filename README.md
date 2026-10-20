@@ -11,7 +11,9 @@ The full requirements are in the [Software Requirements Specification](docs/SRS_
 | Authentication | Secure login, password reset, role-based access (Admin, Teacher, Bursar, Parent) |
 | Students | Admission, enrolment, profiles, linking pupils to parents/guardians |
 | Staff | Teacher and non-teaching staff records, class/subject assignment |
-| Academics | Sessions, terms, classes, subjects, timetables |
+| Academics | Sessions, terms, classes, subjects |
+| Timetable | Weekly class timetables with clash checks (no overlapping periods, no teacher in two classes at once), each teacher's own week, and today's lessons on the teacher dashboard |
+| Calendar | School events calendar (holidays, exams, meetings, activities) shown to everyone, staff only or parents only, with upcoming events on every dashboard |
 | Attendance | Daily class attendance and summaries |
 | Results | CA and exam scores, Montessori observations, auto-graded report cards |
 | Fees | Fee structures, invoices, payments, receipts, outstanding balances |
@@ -134,6 +136,8 @@ All endpoints are under `/api` and, except login, need an `Authorization: Bearer
 | Attendance | `GET/POST /attendance`, `GET /attendance/student/:id` |
 | Results | `GET/POST /scores`, `GET /results/broadsheet`, `GET /results/report/:studentId`, `POST /results/observations/:id`, `POST /results/remarks/:id` |
 | Fees | `GET/POST /fees/items`, `GET /fees/statement/:studentId`, `POST /fees/payments`, `GET /fees/payments/:id/receipt`, `GET /fees/reports/collection`, `GET /fees/reports/debtors` |
+| Timetable | `GET /timetable?classId=`, `GET /timetable/mine`, `POST /timetable`, `PATCH/DELETE /timetable/:id` |
+| Events | `GET /events?from=&to=`, `POST /events`, `PATCH/DELETE /events/:id` |
 | Notifications | `POST /fees/reminders`, `GET /email-log` |
 | Other | `GET /dashboard`, `GET /audit-log`, `GET/POST/DELETE /announcements` |
 

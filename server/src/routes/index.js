@@ -11,6 +11,7 @@ const results = require('../controllers/resultController');
 const fees = require('../controllers/feeController');
 const announcements = require('../controllers/announcementController');
 const dashboard = require('../controllers/dashboardController');
+const timetable = require('../controllers/timetableController');
 
 const router = express.Router();
 const admin = authorize('admin');
@@ -85,6 +86,17 @@ router.get('/fees/payments/:id/receipt', authorize('admin', 'bursar', 'parent'),
 router.get('/fees/reports/collection', finance, h(fees.collectionReport));
 router.get('/fees/reports/debtors', finance, h(fees.debtors));
 router.post('/fees/reminders', finance, h(fees.sendReminders));
+
+// Timetable and events calendar
+router.get('/timetable', h(timetable.classTimetable));
+router.get('/timetable/mine', authorize('teacher'), h(timetable.mySchedule));
+router.post('/timetable', admin, h(timetable.createSlot));
+router.patch('/timetable/:id', admin, h(timetable.updateSlot));
+router.delete('/timetable/:id', admin, h(timetable.deleteSlot));
+router.get('/events', h(timetable.listEvents));
+router.post('/events', admin, h(timetable.createEvent));
+router.patch('/events/:id', admin, h(timetable.updateEvent));
+router.delete('/events/:id', admin, h(timetable.deleteEvent));
 
 // Announcements
 router.get('/announcements', h(announcements.list));

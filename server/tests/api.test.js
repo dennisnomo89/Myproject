@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../src/app');
-const { sequelize, Student, Term, Subject, SchoolClass, EmailLog } = require('../src/models');
+const { sequelize, Student, Term, Subject, SchoolClass, EmailLog, User } = require('../src/models');
 const { seed, DEMO_PASSWORD } = require('../src/seed');
 const notifications = require('../src/utils/notifications');
 
@@ -233,6 +233,80 @@ describe('email notifications', () => {
     const res = await api('admin').get('/api/email-log');
     expect(res.status).toBe(200);
     expect(res.body.mode).toBe('log');
+  });
+});
+
+describe('timetable', () => {
+  test('anyone linked to the class can view its timetable; others cannot', async () => {
+    const nurseryRes = await api('parent').get(`/api/timetable?classId=${nursery.id}`);
+    expect(nurseryRes.status).toBe(200);
+    expect(nurseryRes.body).toHaveLength(30); // 6 periods x 5 days
+    expect(nurseryRes.body.find((s) => s.subject).teacher.fullName).toBe('Miss Ada Nwosu');
+    expect((await api('ada').get(`/api/timetable?classId=${primary.id}`)).status).toBe(403);
+  });
+
+  test('rejects a slot that overlaps another in the same class', async () => {
+    const res = await api('admin').post('/api/timetable', {
+      classId: nursery.id, day: 1, startTime: '08:45', endTime: '09:30', subjectId: english.id,
+    });
+    expect(res.status).toBe(409);
+    expect(res.body.message).toMatch(/overlaps/);
+  });
+
+  test('rejects a teacher being in two classes at once', async () => {
+    // Make Ada teach English in Primary 1 too, then book it while she is teaching Nursery 2.
+    await api('admin').post(`/api/classes/${primary.id}/subjects`, { subjectId: english.id, teacherId: (await User.findOne({ where: { email: 'ada.teacher@gvma.test' } })).id });
+    await api('admin').post('/api/timetable', { classId: primary.id, day: 1, startTime: '12:00', endTime: '12:40', subjectId: english.id }).expect(201);
+    const nurseryLate = await api('admin').post('/api/timetable', { classId: nursery.id, day: 1, startTime: '12:20', endTime: '13:00', subjectId: english.id });
+    expect(nurseryLate.status).toBe(409);
+    expect(nurseryLate.body.message).toMatch(/Miss Ada Nwosu is already teaching/);
+  });
+
+  test('validates times and requires a subject offered in the class', async () => {
+    const base = { classId: nursery.id, day: 2, startTime: '13:00', endTime: '12:00', label: 'Nap' };
+    expect((await api('admin').post('/api/timetable', base)).status).toBe(400);
+    const music = await Subject.create({ name: 'Music' });
+    const res = await api('admin').post('/api/timetable', { ...base, endTime: '13:30', label: null, subjectId: music.id });
+    expect(res.status).toBe(400);
+    expect(res.body.message).toMatch(/not offered/);
+  });
+
+  test('teachers get their own weekly schedule across classes', async () => {
+    const res = await api('ada').get('/api/timetable/mine');
+    expect(res.status).toBe(200);
+    expect(res.body.every((s) => s.teacher.fullName === 'Miss Ada Nwosu')).toBe(true);
+    expect(new Set(res.body.map((s) => s.classId)).size).toBe(2);
+  });
+
+  test('only admins can change the timetable', async () => {
+    expect((await api('ada').post('/api/timetable', { classId: nursery.id, day: 3, startTime: '13:00', endTime: '13:30', label: 'Story time' })).status).toBe(403);
+  });
+});
+
+describe('events calendar', () => {
+  const window = '?from=2026-10-01&to=2026-12-31';
+
+  test('events are filtered by audience', async () => {
+    const titles = async (who) => (await api(who).get(`/api/events${window}`)).body.map((e) => e.title);
+    expect(await titles('parent')).toContain('PTA meeting');
+    expect(await titles('parent')).not.toContain('Staff meeting');
+    expect(await titles('ada')).toContain('Staff meeting');
+    expect(await titles('ada')).not.toContain('PTA meeting');
+    expect((await titles('admin')).length).toBe(7);
+  });
+
+  test('returns events that overlap the requested range', async () => {
+    const res = await api('admin').get('/api/events?from=2026-10-28&to=2026-10-28');
+    expect(res.body.map((e) => e.title)).toEqual(['Mid-term break']);
+  });
+
+  test('admins create events; end date cannot precede start date', async () => {
+    const bad = await api('admin').post('/api/events', { title: 'Open day', startDate: '2026-11-20', endDate: '2026-11-19' });
+    expect(bad.status).toBe(400);
+    const ok = await api('admin').post('/api/events', { title: 'Open day', startDate: '2026-11-20', category: 'activity' });
+    expect(ok.status).toBe(201);
+    expect(ok.body.endDate).toBe('2026-11-20');
+    expect((await api('ada').post('/api/events', { title: 'X', startDate: '2026-11-20' })).status).toBe(403);
   });
 });
 

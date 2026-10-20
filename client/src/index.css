@@ -215,6 +215,40 @@ textarea { width: 100%; resize: vertical; }
 .seg.on.seg-absent { background: var(--bad-bg); color: var(--bad); font-weight: 600; }
 .seg.on.seg-excused { background: var(--info-bg); color: var(--brand-dark); font-weight: 600; }
 
+/* ---------- Timetable ---------- */
+.timetable { table-layout: fixed; min-width: 640px; }
+.timetable th.time { width: 88px; font-size: 0.85rem; text-transform: none; letter-spacing: 0; color: var(--text); background: #fafbfc; }
+.timetable th.time span { color: var(--muted); font-weight: 400; display: block; }
+.timetable th.today, .timetable td.today { background: #f2f8fc; }
+.timetable td.slot { padding: 4px; vertical-align: top; }
+.timetable td.empty { text-align: center; vertical-align: middle; }
+.slot-card { display: flex; flex-direction: column; width: 100%; text-align: left; font: inherit; padding: 0.4rem 0.5rem; border-radius: 6px; border: 1px solid #cfe0ec; background: var(--info-bg); color: var(--brand-dark); line-height: 1.25; }
+button.slot-card { cursor: pointer; }
+button.slot-card:hover { border-color: var(--brand); }
+.slot-card small { color: var(--muted); font-size: 0.78rem; }
+.slot-label { background: var(--bg); border-color: var(--border); color: var(--muted); font-style: italic; }
+
+/* ---------- Calendar ---------- */
+.calendar { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+.cal-head { padding: 0.35rem; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; color: var(--muted); background: #fafbfc; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; }
+.cal-day { min-height: 84px; padding: 4px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cal-day.weekend { background: #fafbfc; }
+.cal-day.outside .cal-num { color: #b6bfca; }
+.cal-num { font-size: 0.8rem; font-weight: 600; }
+.cal-day.today .cal-num { background: var(--brand); color: #fff; border-radius: 999px; width: 1.6rem; height: 1.6rem; display: inline-flex; align-items: center; justify-content: center; }
+.cal-event { font: inherit; font-size: 0.72rem; text-align: left; border: 0; border-radius: 4px; padding: 1px 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.cal-event:disabled { cursor: default; }
+.cat-holiday { background: var(--good-bg); color: var(--good); }
+.cat-exam { background: var(--bad-bg); color: var(--bad); }
+.cat-meeting { background: var(--warn-bg); color: var(--warn); }
+.cat-activity { background: var(--info-bg); color: var(--brand-dark); }
+.cat-other { background: var(--bg); color: var(--muted); }
+.badge-info { background: var(--info-bg); color: var(--brand-dark); }
+@media (max-width: 760px) {
+  .cal-day { min-height: 56px; }
+  .cal-event { font-size: 0; height: 6px; padding: 0; }
+}
+
 /* ---------- Modal ---------- */
 .modal-backdrop { position: fixed; inset: 0; background: rgba(16, 24, 40, 0.45); display: flex; align-items: flex-start; justify-content: center; padding: 6vh 1rem; z-index: 50; overflow-y: auto; }
 .modal { background: #fff; border-radius: var(--radius); padding: 1.25rem; width: 100%; max-width: 560px; box-shadow: 0 20px 40px rgba(16, 24, 40, 0.2); }

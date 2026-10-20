@@ -1,5 +1,8 @@
 const { Op } = require('sequelize');
-const { Student, User, SchoolClass, Attendance, Payment, Term, AuditLog, Announcement, EmailLog } = require('../models');
+const {
+  Student, User, SchoolClass, Attendance, Payment, Term, AuditLog, Announcement, EmailLog,
+  SchoolEvent, TimetableSlot, ClassSubject, Subject,
+} = require('../models');
 const { isLive } = require('../utils/mailer');
 const { teacherClassIds, parentStudentIds } = require('../middleware/access');
 
@@ -14,7 +17,15 @@ exports.summary = async (req, res) => {
     order: [['createdAt', 'DESC']],
     limit: 5,
   });
-  const base = { role, currentTerm: term, latestAnnouncements };
+  const upcomingEvents = await SchoolEvent.findAll({
+    where: {
+      audience: { [Op.in]: role === 'admin' ? ['all', 'staff', 'parents'] : audienceFor },
+      endDate: { [Op.gte]: today() },
+    },
+    order: [['startDate', 'ASC']],
+    limit: 5,
+  });
+  const base = { role, currentTerm: term, latestAnnouncements, upcomingEvents };
 
   if (role === 'admin' || role === 'bursar') {
     const [students, teachers, parents, classes, presentToday, markedToday, collected] = await Promise.all([
@@ -46,8 +57,27 @@ exports.summary = async (req, res) => {
       attributes: ['id'],
     });
     const markedClassIds = new Set(marked.map((m) => m.Student.SchoolClassId));
+
+    // Lessons this teacher teaches today (empty at weekends).
+    const weekday = new Date().getDay();
+    const links = await ClassSubject.findAll({ where: { teacherId: id } });
+    const todaysLessons = weekday >= 1 && weekday <= 5 && links.length
+      ? await TimetableSlot.findAll({
+        where: { day: weekday, [Op.or]: links.map((l) => ({ SchoolClassId: l.SchoolClassId, SubjectId: l.SubjectId })) },
+        include: [Subject, SchoolClass],
+        order: [['startTime', 'ASC']],
+      })
+      : [];
+
     return res.json({
       ...base,
+      todaysLessons: todaysLessons.map((s) => ({
+        id: s.id,
+        startTime: s.startTime,
+        endTime: s.endTime,
+        subject: s.Subject.name,
+        class: `${s.SchoolClass.name}${s.SchoolClass.arm ? ` ${s.SchoolClass.arm}` : ''}`,
+      })),
       classes: classes.map((c) => ({
         id: c.id,
         name: `${c.name}${c.arm ? ` ${c.arm}` : ''}`,
