@@ -19,6 +19,7 @@ import AuditLog from './pages/AuditLog'
 import EmailLog from './pages/EmailLog'
 import Timetable from './pages/Timetable'
 import Calendar from './pages/Calendar'
+import Messages from './pages/Messages'
 import Profile from './pages/Profile'
 
 function RequireRole({ roles, children }) {
@@ -56,6 +57,8 @@ export default function App() {
         <Route path="announcements" element={<Announcements />} />
         <Route path="timetable" element={<Timetable />} />
         <Route path="calendar" element={<Calendar />} />
+        <Route path="messages" element={<Messages />} />
+        <Route path="messages/:id" element={<Messages />} />
         <Route path="users" element={<RequireRole roles={['admin']}><Users /></RequireRole>} />
         <Route path="settings" element={<RequireRole roles={['admin']}><Settings /></RequireRole>} />
         <Route path="audit-log" element={<RequireRole roles={['admin']}><AuditLog /></RequireRole>} />

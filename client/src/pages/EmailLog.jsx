@@ -4,7 +4,7 @@ import { useApi } from '../services/useApi'
 import { dateTime, label } from '../services/format'
 import { Alert, Badge, Card, Empty, Loading, Modal, PageHeader } from '../components/ui'
 
-const EVENTS = ['results_published', 'fee_reminder', 'payment_received', 'announcement']
+const EVENTS = ['results_published', 'fee_reminder', 'payment_received', 'announcement', 'new_message']
 const STATUS_TONE = { sent: 'good', logged: 'neutral', failed: 'bad' }
 
 const escapeHtml = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))

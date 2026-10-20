@@ -17,7 +17,7 @@ The full requirements are in the [Software Requirements Specification](docs/SRS_
 | Attendance | Daily class attendance and summaries |
 | Results | CA and exam scores, Montessori observations, auto-graded report cards |
 | Fees | Fee structures, invoices, payments, receipts, outstanding balances |
-| Communication | Announcements, events calendar, teacher–parent messages |
+| Communication | Announcements, plus private messages between parents and staff. Teachers can message parents of pupils in their classes; parents can message their children's teachers and the school office. There's an unread badge in the sidebar, and new messages are emailed. |
 | Email notifications | Parents are emailed when results are published, when a payment is recorded, when the bursar sends fee reminders, and for announcements. Each user can opt out on their profile. |
 | Reports | Enrolment, attendance, performance and fee-collection reports |
 
@@ -117,6 +117,7 @@ With no SMTP settings, emails are only recorded, and admins can read them on the
 | Bursar clicks **Email reminders to parents** (Fees → Outstanding balances) | Parents of pupils who still owe for the term |
 | A payment is recorded | That pupil's parents, with the receipt number and remaining balance |
 | An announcement is posted (with "Also send by email" ticked) | Everyone in the chosen audience, except the poster |
+| A message is sent | The other person in the conversation |
 
 ### Using MySQL
 
@@ -138,6 +139,7 @@ All endpoints are under `/api` and, except login, need an `Authorization: Bearer
 | Fees | `GET/POST /fees/items`, `GET /fees/statement/:studentId`, `POST /fees/payments`, `GET /fees/payments/:id/receipt`, `GET /fees/reports/collection`, `GET /fees/reports/debtors` |
 | Timetable | `GET /timetable?classId=`, `GET /timetable/mine`, `POST /timetable`, `PATCH/DELETE /timetable/:id` |
 | Events | `GET /events?from=&to=`, `POST /events`, `PATCH/DELETE /events/:id` |
+| Messages | `GET /messages/contacts`, `GET /messages/unread-count`, `GET/POST /messages`, `GET/POST /messages/:id` |
 | Notifications | `POST /fees/reminders`, `GET /email-log` |
 | Other | `GET /dashboard`, `GET /audit-log`, `GET/POST/DELETE /announcements` |
 

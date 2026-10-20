@@ -12,6 +12,7 @@ const fees = require('../controllers/feeController');
 const announcements = require('../controllers/announcementController');
 const dashboard = require('../controllers/dashboardController');
 const timetable = require('../controllers/timetableController');
+const messages = require('../controllers/messageController');
 
 const router = express.Router();
 const admin = authorize('admin');
@@ -97,6 +98,14 @@ router.get('/events', h(timetable.listEvents));
 router.post('/events', admin, h(timetable.createEvent));
 router.patch('/events/:id', admin, h(timetable.updateEvent));
 router.delete('/events/:id', admin, h(timetable.deleteEvent));
+
+// Messages between parents and staff
+router.get('/messages/contacts', h(messages.contacts));
+router.get('/messages/unread-count', h(messages.unreadCount));
+router.get('/messages', h(messages.listConversations));
+router.post('/messages', h(messages.startConversation));
+router.get('/messages/:id', h(messages.getConversation));
+router.post('/messages/:id', h(messages.reply));
 
 // Announcements
 router.get('/announcements', h(announcements.list));

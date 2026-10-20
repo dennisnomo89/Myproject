@@ -124,6 +124,19 @@ const SchoolEvent = sequelize.define('SchoolEvent', {
   audience: { type: DataTypes.ENUM('all', 'staff', 'parents'), allowNull: false, defaultValue: 'all' },
 }, { tableName: 'events' });
 
+// A private thread between one parent and one staff member, optionally about a pupil.
+// Each side's last-read time is stored so unread messages can be counted.
+const Conversation = sequelize.define('Conversation', {
+  subject: { type: DataTypes.STRING(150), allowNull: false },
+  lastMessageAt: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
+  parentLastReadAt: DataTypes.DATE,
+  staffLastReadAt: DataTypes.DATE,
+});
+
+const Message = sequelize.define('Message', {
+  body: { type: DataTypes.TEXT, allowNull: false, validate: { notEmpty: true, len: [1, 5000] } },
+}, { updatedAt: false });
+
 // Every email the system sends (or, in development, would have sent).
 const EmailLog = sequelize.define('EmailLog', {
   event: { type: DataTypes.STRING(40), allowNull: false }, // results_published, fee_reminder, ...
@@ -183,6 +196,13 @@ TimetableSlot.belongsTo(Subject);
 
 SchoolEvent.belongsTo(User, { as: 'createdBy', foreignKey: 'createdById' });
 
+Conversation.belongsTo(User, { as: 'parent', foreignKey: 'parentId' });
+Conversation.belongsTo(User, { as: 'staff', foreignKey: 'staffId' });
+Conversation.belongsTo(Student);
+Conversation.hasMany(Message, { onDelete: 'CASCADE' });
+Message.belongsTo(Conversation);
+Message.belongsTo(User, { as: 'sender', foreignKey: 'senderId' });
+
 module.exports = {
   sequelize,
   ROLES,
@@ -207,4 +227,6 @@ module.exports = {
   TimetableSlot,
   SchoolEvent,
   EVENT_CATEGORIES,
+  Conversation,
+  Message,
 };

@@ -74,6 +74,19 @@ exports.paymentReceived = ({ parent, student, payment, balance }) => ({
   }),
 });
 
+exports.newMessage = ({ recipient, sender, conversation, body }) => ({
+  subject: `New message from ${sender.fullName}: ${conversation.subject}`,
+  ...render({
+    greeting: `Dear ${recipient.fullName},`,
+    paragraphs: [
+      `${sender.fullName} sent you a message on the school portal:`,
+      ...body.split(/\n{2,}/),
+      'Please reply on the portal rather than to this email.',
+    ],
+    button: { label: 'Read and reply', url: `${appUrl}/messages/${conversation.id}` },
+  }),
+});
+
 exports.announcement = ({ user, announcement }) => ({
   subject: `School notice: ${announcement.title}`,
   ...render({

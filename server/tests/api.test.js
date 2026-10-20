@@ -32,6 +32,7 @@ beforeAll(async () => {
   tokens.bursar = await login('bursar@gvma.test');
   tokens.ada = await login('ada.teacher@gvma.test');
   tokens.parent = await login('parent@gvma.test');
+  tokens.amina = await login('amina.parent@gvma.test');
   term = await Term.findOne({ where: { isCurrent: true } });
   nursery = await SchoolClass.findOne({ where: { name: 'Nursery 2' } });
   primary = await SchoolClass.findOne({ where: { name: 'Primary 1' } });
@@ -307,6 +308,80 @@ describe('events calendar', () => {
     expect(ok.status).toBe(201);
     expect(ok.body.endDate).toBe('2026-11-20');
     expect((await api('ada').post('/api/events', { title: 'X', startDate: '2026-11-20' })).status).toBe(403);
+  });
+});
+
+describe('messages', () => {
+  const idOf = async (email) => (await User.findOne({ where: { email } })).id;
+
+  test('teachers can contact only parents of their own pupils', async () => {
+    const res = await api('ada').get('/api/messages/contacts');
+    expect(res.status).toBe(200);
+    const emails = await Promise.all(res.body.map((c) => User.findByPk(c.user.id).then((u) => u.email)));
+    // Ada teaches Nursery 2 (Chiamaka Johnson, Fatima Yusuf) — and English in Primary 1 from the timetable test (David Johnson).
+    expect(emails.sort()).toEqual(['amina.parent@gvma.test', 'parent@gvma.test']);
+    const johnson = res.body.find((c) => c.students.some((s) => s.name === 'Chiamaka Johnson'));
+    expect(johnson.reason).toMatch(/Parent of/);
+  });
+
+  test("parents see their children's teachers and the office", async () => {
+    const res = await api('parent').get('/api/messages/contacts');
+    const names = res.body.map((c) => c.user.fullName);
+    expect(names).toEqual(expect.arrayContaining(['Miss Ada Nwosu', 'Mr. Tunde Bello', 'Mrs. Grace Okafor', 'Mr. Daniel Eze']));
+    expect(res.body.find((c) => c.user.fullName === 'Miss Ada Nwosu').reason).toMatch(/Chiamaka's class teacher/);
+  });
+
+  test('a parent cannot message a teacher who does not teach their children', async () => {
+    const tunde = await idOf('tunde.teacher@gvma.test');
+    // Amina's only child is in Nursery 2, which Tunde does not teach.
+    const res = await api('amina').post('/api/messages', { recipientId: tunde, subject: 'Hi', body: 'Hello' });
+    expect(res.status).toBe(403);
+  });
+
+  test('full conversation: start, unread count, read, reply, email alerts', async () => {
+    await notifications.flush();
+    await EmailLog.destroy({ where: {} });
+    const chiamaka = await Student.findOne({ where: { firstName: 'Chiamaka' } });
+    const start = await api('ada').post('/api/messages', {
+      recipientId: await idOf('parent@gvma.test'), studentId: chiamaka.id, subject: 'Field trip form', body: 'Please sign the field trip form.',
+    });
+    expect(start.status).toBe(201);
+    expect(start.body.with.fullName).toBe('Mr. Chidi Johnson');
+    const convId = start.body.id;
+
+    // The parent has one unread message (plus whatever was seeded) and an email alert.
+    const before = (await api('parent').get('/api/messages/unread-count')).body.unread;
+    expect(before).toBeGreaterThanOrEqual(1);
+    await notifications.flush();
+    const [alert] = await EmailLog.findAll({ where: { event: 'new_message' } });
+    expect(alert.to).toBe('parent@gvma.test');
+    expect(alert.text).toContain('Please sign the field trip form.');
+
+    // Opening the thread marks it read.
+    const thread = await api('parent').get(`/api/messages/${convId}`);
+    expect(thread.body.messages).toHaveLength(1);
+    expect(thread.body.messages[0].fromMe).toBe(false);
+    expect((await api('parent').get('/api/messages/unread-count')).body.unread).toBe(before - 1);
+
+    // Reply goes back to the teacher.
+    const reply = await api('parent').post(`/api/messages/${convId}`, { body: 'Signed, thank you!' });
+    expect(reply.status).toBe(201);
+    const list = (await api('ada').get('/api/messages')).body;
+    const conv = list.find((c) => c.id === convId);
+    expect(conv.unread).toBe(1);
+    expect(conv.lastMessage.body).toBe('Signed, thank you!');
+  });
+
+  test('conversations are private to their two participants', async () => {
+    const [conv] = (await api('ada').get('/api/messages')).body;
+    expect((await api('amina').get(`/api/messages/${conv.id}`)).status).toBe(404);
+    expect((await api('admin').get(`/api/messages/${conv.id}`)).status).toBe(404);
+    expect((await api('amina').post(`/api/messages/${conv.id}`, { body: 'hi' })).status).toBe(404);
+  });
+
+  test('empty messages are rejected', async () => {
+    const [conv] = (await api('ada').get('/api/messages')).body;
+    expect((await api('ada').post(`/api/messages/${conv.id}`, { body: '   ' })).status).toBe(400);
   });
 });
 
