@@ -167,6 +167,19 @@ Databases created before migrations were introduced are adopted automatically: t
 
 In `server/.env`, set `DB_DIALECT=mysql` and fill in `DB_HOST`, `DB_NAME`, `DB_USER` and `DB_PASSWORD`. Create the empty database first. The migrations create the tables when the server starts, or when you run `npm run migrate`.
 
+## Online demo on Render
+
+`render.yaml` sets up a free demo on [Render](https://render.com) that anyone can open in a browser:
+
+1. Sign in to Render with GitHub and choose **New → Blueprint**.
+2. Pick this repository; Render reads `render.yaml` and creates the `gvma-sms` web service.
+3. Wait for the first deploy, then open the `https://….onrender.com` address it shows and sign in with a demo account.
+
+Every push to `main` deploys again. The demo is for showing the system, not for real school data:
+- Each deploy builds a fresh database with the demo data. The free plan has no lasting disk, so changes made in the demo disappear when it redeploys or sleeps.
+- After 15 minutes without visitors the free service sleeps; the next visit takes about a minute to wake it.
+- Emails are only recorded in the Email Log, because no email account is configured.
+
 ## Deploying for the school
 
 In production the API serves the built web app, so the school runs **one** Node.js server.
