@@ -30,9 +30,10 @@ module.exports = {
   },
   // Sessions end after this much inactivity: the web app refreshes the token while the user is active.
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '30m',
-  clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  // On Render, RENDER_EXTERNAL_URL is the service's public address (e.g. https://gvma-sms.onrender.com).
+  clientOrigin: process.env.CLIENT_ORIGIN || process.env.RENDER_EXTERNAL_URL || 'http://localhost:5173',
   // Base URL used for links inside emails.
-  appUrl: process.env.APP_URL || process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  appUrl: process.env.APP_URL || process.env.CLIENT_ORIGIN || process.env.RENDER_EXTERNAL_URL || 'http://localhost:5173',
   backup: {
     // Where backup files are kept, how often the automatic backup runs, and how many automatic ones to keep.
     dir: env === 'test'

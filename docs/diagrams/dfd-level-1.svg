@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="930" viewBox="0 0 1300 930" font-family="Arial, Helvetica, sans-serif">
+<title>Data flow diagram level 1</title>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4b5d70"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="650" y="36" font-size="20" font-weight="bold" fill="#174a6d" text-anchor="middle">Data flow diagram — Level 1</text>
+<rect x="470" y="70" width="250" height="76" rx="12" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.8"/>
+<line x1="470" y1="94" x2="720" y2="94" stroke="#1f5f8b" stroke-width="1"/>
+<text x="595" y="87" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1.0</text>
+<text x="595" y="116.425" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Authenticate users</text><text x="595" y="132.675" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">(login, reset, sessions)</text>
+<rect x="470" y="185" width="250" height="76" rx="12" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.8"/>
+<line x1="470" y1="209" x2="720" y2="209" stroke="#1f5f8b" stroke-width="1"/>
+<text x="595" y="202" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">2.0</text>
+<text x="595" y="231.425" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Manage pupils, classes</text><text x="595" y="247.675" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">and timetable</text>
+<rect x="470" y="300" width="250" height="76" rx="12" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.8"/>
+<line x1="470" y1="324" x2="720" y2="324" stroke="#1f5f8b" stroke-width="1"/>
+<text x="595" y="317" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">3.0</text>
+<text x="595" y="346.425" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Produce reports</text><text x="595" y="362.675" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">and backups</text>
+<rect x="470" y="415" width="250" height="76" rx="12" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.8"/>
+<line x1="470" y1="439" x2="720" y2="439" stroke="#1f5f8b" stroke-width="1"/>
+<text x="595" y="432" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">4.0</text>
+<text x="595" y="469.55" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Record attendance</text>
+<rect x="470" y="530" width="250" height="76" rx="12" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.8"/>
+<line x1="470" y1="554" x2="720" y2="554" stroke="#1f5f8b" stroke-width="1"/>
+<text x="595" y="547" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">5.0</text>
+<text x="595" y="576.425" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Process results</text><text x="595" y="592.675" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">and report cards</text>
+<rect x="470" y="645" width="250" height="76" rx="12" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.8"/>
+<line x1="470" y1="669" x2="720" y2="669" stroke="#1f5f8b" stroke-width="1"/>
+<text x="595" y="662" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">6.0</text>
+<text x="595" y="691.425" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Communicate (messages,</text><text x="595" y="707.675" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">announcements, email)</text>
+<rect x="470" y="760" width="250" height="76" rx="12" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.8"/>
+<line x1="470" y1="784" x2="720" y2="784" stroke="#1f5f8b" stroke-width="1"/>
+<text x="595" y="777" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">7.0</text>
+<text x="595" y="806.425" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Manage fees</text><text x="595" y="822.675" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">and payments</text>
+<path d="M1060,88 L830,88 L830,128 L1060,128" fill="#eef3e6" stroke="#6b8f3a" stroke-width="1.6"/>
+<line x1="872" y1="88" x2="872" y2="128" stroke="#6b8f3a" stroke-width="1.4"/>
+<text x="851" y="113" font-size="12" font-weight="bold" fill="#3f5a1e" text-anchor="middle">D1</text>
+<text x="882" y="113" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">Users and reset tokens</text>
+<path d="M1060,203 L830,203 L830,243 L1060,243" fill="#eef3e6" stroke="#6b8f3a" stroke-width="1.6"/>
+<line x1="872" y1="203" x2="872" y2="243" stroke="#6b8f3a" stroke-width="1.4"/>
+<text x="851" y="228" font-size="12" font-weight="bold" fill="#3f5a1e" text-anchor="middle">D2</text>
+<text x="882" y="228" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">Pupils, classes, timetable</text>
+<path d="M1060,318 L830,318 L830,358 L1060,358" fill="#eef3e6" stroke="#6b8f3a" stroke-width="1.6"/>
+<line x1="872" y1="318" x2="872" y2="358" stroke="#6b8f3a" stroke-width="1.4"/>
+<text x="851" y="343" font-size="12" font-weight="bold" fill="#3f5a1e" text-anchor="middle">D3</text>
+<text x="882" y="343" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">Backup files, audit log</text>
+<path d="M1060,433 L830,433 L830,473 L1060,473" fill="#eef3e6" stroke="#6b8f3a" stroke-width="1.6"/>
+<line x1="872" y1="433" x2="872" y2="473" stroke="#6b8f3a" stroke-width="1.4"/>
+<text x="851" y="458" font-size="12" font-weight="bold" fill="#3f5a1e" text-anchor="middle">D4</text>
+<text x="882" y="458" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">Attendance</text>
+<path d="M1060,548 L830,548 L830,588 L1060,588" fill="#eef3e6" stroke="#6b8f3a" stroke-width="1.6"/>
+<line x1="872" y1="548" x2="872" y2="588" stroke="#6b8f3a" stroke-width="1.4"/>
+<text x="851" y="573" font-size="12" font-weight="bold" fill="#3f5a1e" text-anchor="middle">D5</text>
+<text x="882" y="573" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">Scores, remarks, terms</text>
+<path d="M1060,663 L830,663 L830,703 L1060,703" fill="#eef3e6" stroke="#6b8f3a" stroke-width="1.6"/>
+<line x1="872" y1="663" x2="872" y2="703" stroke="#6b8f3a" stroke-width="1.4"/>
+<text x="851" y="688" font-size="12" font-weight="bold" fill="#3f5a1e" text-anchor="middle">D6</text>
+<text x="882" y="688" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">Messages, notices, email log</text>
+<path d="M1060,778 L830,778 L830,818 L1060,818" fill="#eef3e6" stroke="#6b8f3a" stroke-width="1.6"/>
+<line x1="872" y1="778" x2="872" y2="818" stroke="#6b8f3a" stroke-width="1.4"/>
+<text x="851" y="803" font-size="12" font-weight="bold" fill="#3f5a1e" text-anchor="middle">D7</text>
+<text x="882" y="803" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">Fee items and payments</text>
+<line x1="720" y1="108" x2="828" y2="108" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<line x1="720" y1="223" x2="828" y2="223" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="720" y1="338" x2="828" y2="338" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="720" y1="453" x2="828" y2="453" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="720" y1="568" x2="828" y2="568" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="720" y1="683" x2="828" y2="683" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="720" y1="798" x2="828" y2="798" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="160" width="160" height="56" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.6"/>
+<text x="120" y="193" font-size="14" font-weight="bold" fill="#1d2733" text-anchor="middle">Administrator</text>
+<rect x="40" y="430" width="160" height="56" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.6"/>
+<text x="120" y="463" font-size="14" font-weight="bold" fill="#1d2733" text-anchor="middle">Teacher</text>
+<rect x="40" y="620" width="160" height="56" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.6"/>
+<text x="120" y="653" font-size="14" font-weight="bold" fill="#1d2733" text-anchor="middle">Parent</text>
+<rect x="40" y="790" width="160" height="56" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.6"/>
+<text x="120" y="823" font-size="14" font-weight="bold" fill="#1d2733" text-anchor="middle">Bursar</text>
+<line x1="200.0" y1="174.5" x2="470.0" y2="129.1" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="295.4" y="141.8" width="79.3" height="20" rx="4" fill="#ffffff" opacity="0.92"/><text x="335" y="155.63947368421051" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">credentials</text>
+<line x1="200.0" y1="193.9" x2="470.0" y2="213.8" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="282.8" y="193.8" width="104.5" height="20" rx="4" fill="#ffffff" opacity="0.92"/><text x="335" y="207.69210526315788" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">pupils, classes</text>
+<line x1="200.0" y1="213.3" x2="474.7" y2="300.0" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="285.1" y="246.6" width="104.5" height="20" rx="4" fill="#ffffff" opacity="0.92"/><text x="337.3333333333333" y="260.48157894736846" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">report requests</text>
+<line x1="200.0" y1="457.2" x2="470.0" y2="454.3" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="285.9" y="445.7" width="98.2" height="20" rx="4" fill="#ffffff" opacity="0.92"/><text x="335" y="459.58684210526314" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">class register</text>
+<line x1="200.0" y1="476.5" x2="470.0" y2="539.1" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="282.8" y="497.8" width="104.5" height="20" rx="4" fill="#ffffff" opacity="0.92"/><text x="335" y="511.63947368421054" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">scores, remarks</text>
+<line x1="200.0" y1="634.5" x2="470.0" y2="589.1" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="266.1" y="604.1" width="110.8" height="20" rx="4" fill="#ffffff" opacity="0.92"/><text x="321.5" y="617.9131578947369" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">view report card</text>
+<line x1="200.0" y1="653.9" x2="470.0" y2="673.8" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="318.3" y="654.8" width="60.4" height="20" rx="4" fill="#ffffff" opacity="0.92"/><text x="348.5" y="668.6868421052632" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">messages</text>
+<line x1="200.0" y1="814.6" x2="470.0" y2="803.3" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/><rect x="304.8" y="798.9" width="60.4" height="20" rx="4" fill="#ffffff" opacity="0.92"/><text x="335" y="812.7973684210527" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">payments</text>
+<rect x="1110" y="716" width="160" height="50" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.6"/>
+<text x="1190" y="746" font-size="14" font-weight="bold" fill="#1d2733" text-anchor="middle">Email server</text>
+<polyline points="700,721 700,741 1108,741" fill="none" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="905" y="758" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">notification and reset emails</text>
+<text x="640" y="905" font-size="11.5" font-weight="normal" fill="#5b6b7d" text-anchor="middle" font-style="italic">Processes 5.0 (results published) and 7.0 (receipts, fee reminders) also send emails through 6.0.</text>
+</svg>

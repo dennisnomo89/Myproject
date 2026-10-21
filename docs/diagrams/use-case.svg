@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="1030" viewBox="0 0 1180 1030" font-family="Arial, Helvetica, sans-serif">
+<title>Use case diagram</title>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4b5d70"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="590" y="36" font-size="20" font-weight="bold" fill="#174a6d" text-anchor="middle">Use case diagram</text>
+<rect x="250" y="210" width="680" height="770" rx="14" fill="#fafcfe" stroke="#1f5f8b" stroke-width="1.8"/>
+<text x="590" y="236" font-size="15" font-weight="bold" fill="#174a6d" text-anchor="middle">School Management System</text>
+<g stroke="#1d2733" stroke-width="2" fill="none"><circle cx="590" cy="86" r="14" fill="#fdf1d3"/><line x1="590" y1="100" x2="590" y2="134"/><line x1="570" y1="112" x2="610" y2="112"/><line x1="590" y1="134" x2="575" y2="160"/><line x1="590" y1="134" x2="605" y2="160"/></g>
+<text x="590" y="64" font-size="14" font-weight="bold" fill="#1d2733" text-anchor="middle">User (any role)</text>
+<g stroke="#1d2733" stroke-width="2" fill="none"><circle cx="120" cy="466" r="14" fill="#fdf1d3"/><line x1="120" y1="480" x2="120" y2="514"/><line x1="100" y1="492" x2="140" y2="492"/><line x1="120" y1="514" x2="105" y2="540"/><line x1="120" y1="514" x2="135" y2="540"/></g><text x="120" y="562" font-size="14" font-weight="bold" fill="#1d2733" text-anchor="middle">Administrator</text>
+<g stroke="#1d2733" stroke-width="2" fill="none"><circle cx="120" cy="766" r="14" fill="#fdf1d3"/><line x1="120" y1="780" x2="120" y2="814"/><line x1="100" y1="792" x2="140" y2="792"/><line x1="120" y1="814" x2="105" y2="840"/><line x1="120" y1="814" x2="135" y2="840"/></g><text x="120" y="862" font-size="14" font-weight="bold" fill="#1d2733" text-anchor="middle">Teacher</text>
+<g stroke="#1d2733" stroke-width="2" fill="none"><circle cx="1060" cy="406" r="14" fill="#fdf1d3"/><line x1="1060" y1="420" x2="1060" y2="454"/><line x1="1040" y1="432" x2="1080" y2="432"/><line x1="1060" y1="454" x2="1045" y2="480"/><line x1="1060" y1="454" x2="1075" y2="480"/></g><text x="1060" y="502" font-size="14" font-weight="bold" fill="#1d2733" text-anchor="middle">Parent</text>
+<g stroke="#1d2733" stroke-width="2" fill="none"><circle cx="1060" cy="731" r="14" fill="#fdf1d3"/><line x1="1060" y1="745" x2="1060" y2="779"/><line x1="1040" y1="757" x2="1080" y2="757"/><line x1="1060" y1="779" x2="1045" y2="805"/><line x1="1060" y1="779" x2="1075" y2="805"/></g><text x="1060" y="827" font-size="14" font-weight="bold" fill="#1d2733" text-anchor="middle">Bursar</text>
+<polyline points="120,452 120,112 552,112" fill="none" stroke="#4b5d70" stroke-width="1.6"/>
+<polyline points="100,792 40,792 40,112 120,112" fill="none" stroke="#4b5d70" stroke-width="1.6"/>
+<polyline points="1060,392 1060,112 628,112" fill="none" stroke="#4b5d70" stroke-width="1.6"/>
+<polyline points="1080,757 1140,757 1140,112 1060,112" fill="none" stroke="#4b5d70" stroke-width="1.6"/>
+<path d="M570,112 L552,103 L552,121 Z" fill="#ffffff" stroke="#4b5d70" stroke-width="1.6"/>
+<path d="M610,112 L628,103 L628,121 Z" fill="#ffffff" stroke="#4b5d70" stroke-width="1.6"/>
+<ellipse cx="365" cy="285" rx="100" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="365" y="281.5625" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Log in /</text><text x="365" y="297.1875" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">reset password</text>
+<ellipse cx="590" cy="285" rx="100" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="590" y="281.5625" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">View announcements</text><text x="590" y="297.1875" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">and calendar</text>
+<ellipse cx="815" cy="285" rx="100" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="815" y="281.5625" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Send and</text><text x="815" y="297.1875" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">read messages</text>
+<ellipse cx="420" cy="370" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="420" y="374.375" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Manage users and roles</text>
+<ellipse cx="420" cy="435" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="420" y="431.5625" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Set up classes, subjects,</text><text x="420" y="447.1875" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">terms and timetable</text>
+<ellipse cx="420" cy="500" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="420" y="496.5625" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Register pupils and</text><text x="420" y="512.1875" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">link parents</text>
+<ellipse cx="420" cy="565" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="420" y="569.375" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Publish results</text>
+<ellipse cx="420" cy="630" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="420" y="634.375" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Back up and restore data</text>
+<ellipse cx="420" cy="730" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="420" y="726.5625" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Post announcements</text><text x="420" y="742.1875" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">and events</text>
+<ellipse cx="420" cy="800" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="420" y="804.375" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Take attendance</text>
+<ellipse cx="420" cy="870" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="420" y="866.5625" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Enter scores, remarks</text><text x="420" y="882.1875" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">and observations</text>
+<ellipse cx="760" cy="370" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="760" y="374.375" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">View report card</text>
+<ellipse cx="760" cy="440" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="760" y="436.5625" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">View child's attendance</text><text x="760" y="452.1875" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">and timetable</text>
+<ellipse cx="760" cy="510" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="760" y="506.5625" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">View fee statement</text><text x="760" y="522.1875" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">and receipts</text>
+<ellipse cx="760" cy="660" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="760" y="664.375" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Set fee structure</text>
+<ellipse cx="760" cy="730" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="760" y="726.5625" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Record payment and</text><text x="760" y="742.1875" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">print receipt</text>
+<ellipse cx="760" cy="800" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="760" y="804.375" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">Send fee reminders</text>
+<ellipse cx="760" cy="870" rx="115" ry="25" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="760" y="874.375" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="middle">View and export reports</text>
+<line x1="560.0" y1="143.7" x2="397.6" y2="261.4" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="590.0" y1="172.0" x2="590.0" y2="260.0" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="620.0" y1="143.7" x2="782.4" y2="261.4" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="150.0" y1="491.5" x2="370.0" y2="392.5" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="150.0" y1="498.0" x2="341.6" y2="453.3" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="150.0" y1="504.5" x2="305.3" y2="501.9" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="150.0" y1="511.0" x2="335.4" y2="548.1" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="150.0" y1="517.5" x2="366.8" y2="607.8" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="150.0" y1="797.5" x2="344.5" y2="748.9" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="150.0" y1="804.5" x2="305.3" y2="801.9" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="150.0" y1="811.5" x2="338.5" y2="852.4" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="1030.0" y1="437.5" x2="835.5" y2="388.9" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="1030.0" y1="444.5" x2="874.7" y2="441.9" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="1030.0" y1="451.5" x2="841.5" y2="492.4" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="1030.0" y1="759.0" x2="818.6" y2="681.5" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="1030.0" y1="766.0" x2="858.0" y2="743.1" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="1030.0" y1="773.0" x2="864.5" y2="789.6" stroke="#4b5d70" stroke-width="1.6"/>
+<line x1="1030.0" y1="780.0" x2="822.8" y2="849.1" stroke="#4b5d70" stroke-width="1.6"/>
+<text x="590" y="935" font-size="11.5" font-weight="normal" fill="#5b6b7d" text-anchor="middle" font-style="italic">The administrator can also do every teacher and bursar task, and staff can view report cards.</text>
+<text x="590" y="955" font-size="11.5" font-weight="normal" fill="#5b6b7d" text-anchor="middle" font-style="italic">Hollow triangle = generalisation: each role is a kind of User and inherits the three shared use cases.</text>
+</svg>
