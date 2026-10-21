@@ -1,5 +1,7 @@
 # School Management Software — Global Virgins Montessori Academy
 
+[![CI](https://github.com/dennisnomo89/Myproject/actions/workflows/ci.yml/badge.svg)](https://github.com/dennisnomo89/Myproject/actions/workflows/ci.yml)
+
 A web-based school management system that digitises the academic and administrative work of Global Virgins Montessori Academy: pupil records, attendance, results and report cards, fees, and communication between the school and parents.
 
 The full requirements are in the [Software Requirements Specification](docs/SRS_School_Management_Software.docx).
@@ -107,6 +109,13 @@ After `npm run seed`, all demo accounts use the password `Password123`. These ar
 cd server
 npm test
 ```
+
+GitHub runs the same checks automatically (`.github/workflows/ci.yml`) on every push to `main` or a `feature/...` branch, and on every pull request:
+
+- API tests on Node 22 and Node 24
+- Web app lint and production build
+
+The result shows as ✓ or ✗ next to each commit and at the bottom of each pull request. Don't merge a pull request with a ✗: open **Details** to see which test failed.
 
 ### Email notifications
 
