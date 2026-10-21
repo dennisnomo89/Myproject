@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="1010" viewBox="0 0 1360 1010" font-family="Arial, Helvetica, sans-serif">
+<title>ERD fees and communication</title>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4b5d70"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="680" y="36" font-size="20" font-weight="bold" fill="#174a6d" text-anchor="middle">Entity relationship diagram — fees, communication and system records</text>
+<rect x="40" y="80" width="240" height="82" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M40,112 L40,86 Q40,80 46,80 L274,80 Q280,80 280,86 L280,112 Z" fill="#1f5f8b"/>
+<text x="160" y="101" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">Classes</text>
+<text x="50" y="132" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="78" y="132" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="78" y="153" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">name, arm</text>
+<rect x="380" y="80" width="240" height="145" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M380,112 L380,86 Q380,80 386,80 L614,80 Q620,80 620,86 L620,112 Z" fill="#1f5f8b"/>
+<text x="500" y="101" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">FeeItems</text>
+<text x="390" y="132" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="418" y="132" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="390" y="153" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="418" y="153" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">SchoolClassId</text>
+<text x="390" y="174" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="418" y="174" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">TermId</text>
+<text x="418" y="195" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">description</text>
+<text x="418" y="216" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">amount</text>
+<rect x="720" y="80" width="240" height="103" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M720,112 L720,86 Q720,80 726,80 L954,80 Q960,80 960,86 L960,112 Z" fill="#1f5f8b"/>
+<text x="840" y="101" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">Terms</text>
+<text x="730" y="132" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="758" y="132" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="758" y="153" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">name</text>
+<text x="758" y="174" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">resultsPublished</text>
+<rect x="40" y="380" width="240" height="124" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M40,412 L40,386 Q40,380 46,380 L274,380 Q280,380 280,386 L280,412 Z" fill="#1f5f8b"/>
+<text x="160" y="401" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">Students</text>
+<text x="50" y="432" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="78" y="432" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="78" y="453" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">admissionNo</text>
+<text x="78" y="474" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">firstName, lastName</text>
+<text x="50" y="495" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="78" y="495" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">SchoolClassId</text>
+<rect x="380" y="360" width="240" height="187" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M380,392 L380,366 Q380,360 386,360 L614,360 Q620,360 620,366 L620,392 Z" fill="#1f5f8b"/>
+<text x="500" y="381" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">Payments</text>
+<text x="390" y="412" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="418" y="412" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="390" y="433" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="418" y="433" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">StudentId</text>
+<text x="390" y="454" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="418" y="454" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">TermId</text>
+<text x="418" y="475" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">amount, method</text>
+<text x="418" y="496" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">receiptNo (unique)</text>
+<text x="418" y="517" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">paidOn</text>
+<text x="390" y="538" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="418" y="538" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">recordedById → Users</text>
+<rect x="720" y="380" width="240" height="124" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M720,412 L720,386 Q720,380 726,380 L954,380 Q960,380 960,386 L960,412 Z" fill="#1f5f8b"/>
+<text x="840" y="401" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">Users</text>
+<text x="730" y="432" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="758" y="432" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="758" y="453" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">fullName, email</text>
+<text x="758" y="474" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">role</text>
+<text x="758" y="495" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">passwordChangedAt</text>
+<rect x="380" y="700" width="240" height="166" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M380,732 L380,706 Q380,700 386,700 L614,700 Q620,700 620,706 L620,732 Z" fill="#1f5f8b"/>
+<text x="500" y="721" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">Conversations</text>
+<text x="390" y="752" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="418" y="752" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="390" y="773" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="418" y="773" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">parentId → Users</text>
+<text x="390" y="794" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="418" y="794" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">staffId → Users</text>
+<text x="390" y="815" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="418" y="815" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">StudentId (optional)</text>
+<text x="418" y="836" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">subject</text>
+<text x="418" y="857" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">lastMessageAt, read times</text>
+<rect x="720" y="720" width="240" height="145" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M720,752 L720,726 Q720,720 726,720 L954,720 Q960,720 960,726 L960,752 Z" fill="#1f5f8b"/>
+<text x="840" y="741" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">Messages</text>
+<text x="730" y="772" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="758" y="772" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="730" y="793" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="758" y="793" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">ConversationId</text>
+<text x="730" y="814" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="758" y="814" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">senderId → Users</text>
+<text x="758" y="835" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">body</text>
+<text x="758" y="856" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">createdAt</text>
+<rect x="1080" y="80" width="240" height="103" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M1080,112 L1080,86 Q1080,80 1086,80 L1314,80 Q1320,80 1320,86 L1320,112 Z" fill="#1f5f8b"/>
+<text x="1200" y="101" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">Announcements</text>
+<text x="1090" y="132" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="1118" y="132" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="1118" y="153" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">title, body, audience</text>
+<text x="1090" y="174" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="1118" y="174" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">postedById → Users</text>
+<rect x="1080" y="255" width="240" height="124" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M1080,287 L1080,261 Q1080,255 1086,255 L1314,255 Q1320,255 1320,261 L1320,287 Z" fill="#1f5f8b"/>
+<text x="1200" y="276" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">Events</text>
+<text x="1090" y="307" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="1118" y="307" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="1118" y="328" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">title, category</text>
+<text x="1118" y="349" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">startDate, endDate</text>
+<text x="1090" y="370" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="1118" y="370" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">createdById → Users</text>
+<rect x="1080" y="450" width="240" height="124" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M1080,482 L1080,456 Q1080,450 1086,450 L1314,450 Q1320,450 1320,456 L1320,482 Z" fill="#1f5f8b"/>
+<text x="1200" y="471" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">PasswordResets</text>
+<text x="1090" y="502" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="1118" y="502" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="1090" y="523" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="1118" y="523" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">UserId</text>
+<text x="1118" y="544" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">tokenHash, expiresAt</text>
+<text x="1118" y="565" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">usedAt</text>
+<rect x="1080" y="625" width="240" height="103" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M1080,657 L1080,631 Q1080,625 1086,625 L1314,625 Q1320,625 1320,631 L1320,657 Z" fill="#1f5f8b"/>
+<text x="1200" y="646" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">AuditLogs</text>
+<text x="1090" y="677" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="1118" y="677" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="1090" y="698" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="1118" y="698" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">UserId</text>
+<text x="1118" y="719" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">action, details</text>
+<rect x="1080" y="780" width="240" height="124" rx="6" fill="#ffffff" stroke="#1f5f8b" stroke-width="1.6"/>
+<path d="M1080,812 L1080,786 Q1080,780 1086,780 L1314,780 Q1320,780 1320,786 L1320,812 Z" fill="#1f5f8b"/>
+<text x="1200" y="801" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle">EmailLog</text>
+<text x="1090" y="832" font-size="10.5" font-weight="bold" fill="#a86b00" text-anchor="start">PK</text>
+<text x="1118" y="832" font-size="12.5" font-weight="bold" fill="#1d2733" text-anchor="start">id</text>
+<text x="1090" y="853" font-size="10.5" font-weight="bold" fill="#1f5f8b" text-anchor="start">FK</text>
+<text x="1118" y="853" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">UserId</text>
+<text x="1118" y="874" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">event, to, subject</text>
+<text x="1118" y="895" font-size="12.5" font-weight="normal" fill="#1d2733" text-anchor="start">status (sent/logged/failed)</text>
+<line x1="280.0" y1="132.1" x2="380.0" y2="141.4" stroke="#4b5d70" stroke-width="1.6"/><text x="295.1015032476076" y="146.55530003554674" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="364.8984967523924" y="134.94469996445326" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="720.0" y1="138.9" x2="620.0" y2="145.1" stroke="#4b5d70" stroke-width="1.6"/><text x="703.4756069228855" y="134.91523837046577" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="636.5243930771145" y="157.08476162953423" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="160.0" y1="162.0" x2="160.0" y2="380.0" stroke="#4b5d70" stroke-width="1.6"/><text x="151" y="182" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="169" y="368" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="280.0" y1="446.1" x2="380.0" y2="449.4" stroke="#4b5d70" stroke-width="1.6"/><text x="295.6866178105292" y="459.5945469768692" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="364.3133821894708" y="443.9054530231308" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="785.6" y1="183.0" x2="598.7" y2="360.0" stroke="#4b5d70" stroke-width="1.6"/><text x="767.8154439816501" y="191.4674346452837" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="616.5323821053064" y="359.53256535471627" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="720.0" y1="446.1" x2="620.0" y2="449.4" stroke="#4b5d70" stroke-width="1.6"/><text x="703.7049066180701" y="441.60483443111104" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="636.2950933819299" y="461.89516556888896" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="778.2" y1="504.0" x2="582.8" y2="700.0" stroke="#4b5d70" stroke-width="1.6"/><text x="760.5114360549594" y="512.9757005025212" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="600.4269803673279" y="699.0242994974788" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="221.8" y1="504.0" x2="417.2" y2="700.0" stroke="#4b5d70" stroke-width="1.6"/><text x="226.7419655792327" y="525.6849188144704" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="412.3196179984799" y="686.3150811855296" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="620.0" y1="786.4" x2="720.0" y2="789.1" stroke="#4b5d70" stroke-width="1.6"/><text x="635.7423854969678" y="799.796314454323" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="704.2576145030322" y="783.703685545677" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="840.0" y1="504.0" x2="840.0" y2="720.0" stroke="#4b5d70" stroke-width="1.6"/><text x="831" y="524" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="849" y="708" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="911.9" y1="380.0" x2="1140.3" y2="183.0" stroke="#4b5d70" stroke-width="1.6"/><text x="929.8781759160546" y="380.36520710631487" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="1122.2957371274235" y="190.63479289368513" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="960.0" y1="400.3" x2="1080.0" y2="358.7" stroke="#4b5d70" stroke-width="1.6"/><text x="978.0668838284903" y="407.5872092879198" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="1061.9331161715097" y="359.4127907120802" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="960.0" y1="465.3" x2="1080.0" y2="488.7" stroke="#4b5d70" stroke-width="1.6"/><text x="973.9880193027773" y="481.2217863859861" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="1066.0119806972227" y="480.7782136140139" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="935.2" y1="504.0" x2="1120.9" y2="625.0" stroke="#4b5d70" stroke-width="1.6"/><text x="943.6755639337106" y="524.2741022609882" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="1112.4438390513642" y="612.7258977390118" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<line x1="895.8" y1="504.0" x2="1144.2" y2="780.0" stroke="#4b5d70" stroke-width="1.6"/><text x="899.8137883897347" y="525.9133889245567" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">1</text><text x="1140.1862116102652" y="766.0866110754433" font-size="12" font-weight="bold" fill="#174a6d" text-anchor="middle">N</text>
+<text x="680" y="990" font-size="12" font-weight="normal" fill="#5b6b7d" text-anchor="middle" font-style="italic">All 22 tables are created by the migration server/migrations/20261021000000-initial-schema.js.</text>
+</svg>
