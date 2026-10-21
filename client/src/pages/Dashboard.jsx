@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext'
 import { useApi } from '../services/useApi'
 import { money, dateTime, label } from '../services/format'
 import { Alert, Badge, Card, Empty, Loading, PageHeader, Stat } from '../components/ui'
+import { EventDates } from './Calendar'
 
 function Announcements({ items }) {
   if (!items.length) return <Empty>No announcements yet.</Empty>
@@ -51,8 +52,34 @@ function AdminView({ data, isAdmin }) {
   )
 }
 
+function UpcomingEvents({ items }) {
+  if (!items.length) return <Empty>Nothing scheduled.</Empty>
+  return (
+    <ul className="list">
+      {items.map((e) => (
+        <li key={e.id}>
+          <strong>{e.title}</strong>
+          <div className="muted small"><EventDates e={e} /> · {label(e.category)}</div>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 function TeacherView({ data }) {
   return (
+    <>
+    <Card title="Today's lessons" actions={<Link to="/timetable">My week</Link>}>
+      {data.todaysLessons.length ? (
+        <table>
+          <tbody>
+            {data.todaysLessons.map((l) => (
+              <tr key={l.id}><td className="nowrap">{l.startTime}–{l.endTime}</td><td><strong>{l.subject}</strong></td><td>{l.class}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      ) : <Empty>No lessons today.</Empty>}
+    </Card>
     <Card title="My classes">
       {data.classes.length ? (
         <div className="tiles">
@@ -70,6 +97,7 @@ function TeacherView({ data }) {
         </div>
       ) : <Empty>You have not been assigned to any class yet.</Empty>}
     </Card>
+    </>
   )
 }
 
@@ -111,9 +139,14 @@ export default function Dashboard() {
             {user.role === 'teacher' && <TeacherView data={data} />}
             {user.role === 'parent' && <ParentView data={data} />}
           </div>
-          <Card title="Announcements" actions={<Link to="/announcements">All</Link>}>
-            <Announcements items={data.latestAnnouncements} />
-          </Card>
+          <div>
+            <Card title="Coming up" actions={<Link to="/calendar">Calendar</Link>}>
+              <UpcomingEvents items={data.upcomingEvents} />
+            </Card>
+            <Card title="Announcements" actions={<Link to="/announcements">All</Link>}>
+              <Announcements items={data.latestAnnouncements} />
+            </Card>
+          </div>
         </div>
       )}
     </>

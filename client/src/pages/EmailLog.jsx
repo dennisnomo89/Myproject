@@ -4,7 +4,7 @@ import { useApi } from '../services/useApi'
 import { dateTime, label } from '../services/format'
 import { Alert, Badge, Card, Empty, Loading, Modal, PageHeader } from '../components/ui'
 
-const EVENTS = ['results_published', 'fee_reminder', 'payment_received', 'announcement']
+const EVENTS = ['results_published', 'fee_reminder', 'payment_received', 'announcement', 'new_message', 'password_reset']
 const STATUS_TONE = { sent: 'good', logged: 'neutral', failed: 'bad' }
 
 const escapeHtml = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))
@@ -61,8 +61,9 @@ export default function EmailLog() {
         <Modal title={open.subject} onClose={() => setOpen(null)}>
           <p className="muted small">To {open.to} · {dateTime(open.createdAt)}</p>
           {open.error && <Alert>{open.error}</Alert>}
-          {/* Sandboxed so the email HTML cannot run scripts or touch the app. */}
-          <iframe className="email-preview" title="Email preview" sandbox="" srcDoc={open.html || `<pre>${escapeHtml(open.text)}</pre>`} />
+          {/* Sandboxed without allow-scripts, so the email HTML can never run code. allow-same-origin is needed
+              because the production Content-Security-Policy (frame-ancestors 'self') blocks an opaque-origin frame. */}
+          <iframe className="email-preview" title="Email preview" sandbox="allow-same-origin" srcDoc={open.html || `<pre>${escapeHtml(open.text)}</pre>`} />
         </Modal>
       )}
     </>

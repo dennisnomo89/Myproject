@@ -12,6 +12,8 @@ const User = sequelize.define('User', {
   phone: DataTypes.STRING(20),
   isActive: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
   emailNotifications: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
+  // Login tokens issued before this time are rejected, so a password change logs out other sessions.
+  passwordChangedAt: DataTypes.DATE,
 }, {
   defaultScope: { attributes: { exclude: ['passwordHash'] } },
   scopes: { withPassword: { attributes: {} } },
@@ -103,6 +105,47 @@ const AuditLog = sequelize.define('AuditLog', {
   details: DataTypes.TEXT,
 }, { updatedAt: false });
 
+const TIME = /^([01]\d|2[0-3]):[0-5]\d$/; // HH:MM, 24-hour
+
+// One period in a class's weekly timetable. A slot has either a subject or a label (e.g. "Break").
+const TimetableSlot = sequelize.define('TimetableSlot', {
+  day: { type: DataTypes.INTEGER, allowNull: false, validate: { min: 1, max: 5 } }, // 1 = Monday … 5 = Friday
+  startTime: { type: DataTypes.STRING(5), allowNull: false, validate: { is: TIME } },
+  endTime: { type: DataTypes.STRING(5), allowNull: false, validate: { is: TIME } },
+  label: DataTypes.STRING(60),
+}, { tableName: 'timetable_slots' });
+
+const EVENT_CATEGORIES = ['holiday', 'exam', 'meeting', 'activity', 'other'];
+
+const SchoolEvent = sequelize.define('SchoolEvent', {
+  title: { type: DataTypes.STRING(150), allowNull: false },
+  description: DataTypes.TEXT,
+  category: { type: DataTypes.ENUM(...EVENT_CATEGORIES), allowNull: false, defaultValue: 'other' },
+  startDate: { type: DataTypes.DATEONLY, allowNull: false },
+  endDate: { type: DataTypes.DATEONLY, allowNull: false },
+  audience: { type: DataTypes.ENUM('all', 'staff', 'parents'), allowNull: false, defaultValue: 'all' },
+}, { tableName: 'events' });
+
+// A private thread between one parent and one staff member, optionally about a pupil.
+// Each side's last-read time is stored so unread messages can be counted.
+const Conversation = sequelize.define('Conversation', {
+  subject: { type: DataTypes.STRING(150), allowNull: false },
+  lastMessageAt: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
+  parentLastReadAt: DataTypes.DATE,
+  staffLastReadAt: DataTypes.DATE,
+});
+
+const Message = sequelize.define('Message', {
+  body: { type: DataTypes.TEXT, allowNull: false, validate: { notEmpty: true, len: [1, 5000] } },
+}, { updatedAt: false });
+
+// One-time password reset link. Only a hash of the token is stored, so the database alone can't be used to reset passwords.
+const PasswordReset = sequelize.define('PasswordReset', {
+  tokenHash: { type: DataTypes.STRING(64), allowNull: false, unique: true },
+  expiresAt: { type: DataTypes.DATE, allowNull: false },
+  usedAt: DataTypes.DATE,
+}, { tableName: 'password_resets', updatedAt: false });
+
 // Every email the system sends (or, in development, would have sent).
 const EmailLog = sequelize.define('EmailLog', {
   event: { type: DataTypes.STRING(40), allowNull: false }, // results_published, fee_reminder, ...
@@ -155,6 +198,23 @@ Announcement.belongsTo(User, { as: 'postedBy', foreignKey: 'postedById' });
 AuditLog.belongsTo(User);
 EmailLog.belongsTo(User);
 
+SchoolClass.hasMany(TimetableSlot, { onDelete: 'CASCADE' });
+TimetableSlot.belongsTo(SchoolClass);
+Subject.hasMany(TimetableSlot);
+TimetableSlot.belongsTo(Subject);
+
+SchoolEvent.belongsTo(User, { as: 'createdBy', foreignKey: 'createdById' });
+
+Conversation.belongsTo(User, { as: 'parent', foreignKey: 'parentId' });
+Conversation.belongsTo(User, { as: 'staff', foreignKey: 'staffId' });
+Conversation.belongsTo(Student);
+Conversation.hasMany(Message, { onDelete: 'CASCADE' });
+Message.belongsTo(Conversation);
+Message.belongsTo(User, { as: 'sender', foreignKey: 'senderId' });
+
+User.hasMany(PasswordReset, { onDelete: 'CASCADE' });
+PasswordReset.belongsTo(User);
+
 module.exports = {
   sequelize,
   ROLES,
@@ -176,4 +236,10 @@ module.exports = {
   Announcement,
   AuditLog,
   EmailLog,
+  TimetableSlot,
+  SchoolEvent,
+  EVENT_CATEGORIES,
+  Conversation,
+  Message,
+  PasswordReset,
 };

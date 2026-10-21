@@ -1,6 +1,7 @@
 const express = require('express');
 const { authenticate, authorize } = require('../middleware/auth');
 const { asyncHandler: h } = require('../utils/httpError');
+const { loginLimiter, resetLimiter } = require('../middleware/rateLimit');
 
 const auth = require('../controllers/authController');
 const users = require('../controllers/userController');
@@ -11,6 +12,10 @@ const results = require('../controllers/resultController');
 const fees = require('../controllers/feeController');
 const announcements = require('../controllers/announcementController');
 const dashboard = require('../controllers/dashboardController');
+const timetable = require('../controllers/timetableController');
+const messages = require('../controllers/messageController');
+const backups = require('../controllers/backupController');
+const reports = require('../controllers/reportController');
 
 const router = express.Router();
 const admin = authorize('admin');
@@ -20,8 +25,11 @@ const finance = authorize('admin', 'bursar');
 router.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 // Authentication
-router.post('/auth/login', h(auth.login));
+router.post('/auth/login', loginLimiter, h(auth.login));
+router.post('/auth/forgot-password', resetLimiter, h(auth.forgotPassword));
+router.post('/auth/reset-password', resetLimiter, h(auth.resetPassword));
 router.use(authenticate);
+router.post('/auth/refresh', h(auth.refresh));
 router.get('/auth/me', h(auth.me));
 router.patch('/auth/me', h(auth.updateProfile));
 router.post('/auth/change-password', h(auth.changePassword));
@@ -85,6 +93,36 @@ router.get('/fees/payments/:id/receipt', authorize('admin', 'bursar', 'parent'),
 router.get('/fees/reports/collection', finance, h(fees.collectionReport));
 router.get('/fees/reports/debtors', finance, h(fees.debtors));
 router.post('/fees/reminders', finance, h(fees.sendReminders));
+
+// Timetable and events calendar
+router.get('/timetable', h(timetable.classTimetable));
+router.get('/timetable/mine', authorize('teacher'), h(timetable.mySchedule));
+router.post('/timetable', admin, h(timetable.createSlot));
+router.patch('/timetable/:id', admin, h(timetable.updateSlot));
+router.delete('/timetable/:id', admin, h(timetable.deleteSlot));
+router.get('/events', h(timetable.listEvents));
+router.post('/events', admin, h(timetable.createEvent));
+router.patch('/events/:id', admin, h(timetable.updateEvent));
+router.delete('/events/:id', admin, h(timetable.deleteEvent));
+
+// Messages between parents and staff
+router.get('/messages/contacts', h(messages.contacts));
+router.get('/messages/unread-count', h(messages.unreadCount));
+router.get('/messages', h(messages.listConversations));
+router.post('/messages', h(messages.startConversation));
+router.get('/messages/:id', h(messages.getConversation));
+router.post('/messages/:id', h(messages.reply));
+
+// Reports (each report checks its own allowed roles)
+router.get('/reports', finance, h(reports.list));
+router.get('/reports/:type', finance, h(reports.show));
+
+// Data backup (admin only)
+router.get('/backups', admin, h(backups.list));
+router.post('/backups', admin, h(backups.create));
+router.get('/backups/:name/download', admin, h(backups.download));
+router.post('/backups/:name/restore', admin, h(backups.restore));
+router.delete('/backups/:name', admin, h(backups.remove));
 
 // Announcements
 router.get('/announcements', h(announcements.list));
