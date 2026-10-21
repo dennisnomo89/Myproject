@@ -60,7 +60,9 @@ school-management-system/
 │   │   ├── models/          # Sequelize models and relationships
 │   │   ├── routes/          # all API routes and who may call them
 │   │   ├── utils/           # grading scale, audit logging, errors
+│   │   ├── db/              # migration runner and command line
 │   │   └── seed.js          # demo data
+│   ├── migrations/          # numbered database changes, applied in order
 │   ├── tests/               # API tests
 │   └── .env.example
 ├── database/
@@ -81,7 +83,7 @@ cd school-management-system
 cd server
 cp .env.example .env      # defaults work for local development
 npm install
-npm run seed              # creates the SQLite database with demo data
+npm run seed              # builds a fresh database with demo data (wipes the dev database)
 npm run dev               # API on http://localhost:5000/api
 
 # 3. Frontend (in a second terminal)
@@ -139,9 +141,85 @@ Admins manage backups on the **Data Backup** page.
 - **Keep copies elsewhere:** download backups regularly and store them away from the server, for example on an external drive or a cloud drive. A backup that sits only on the server is lost if the server's disk fails.
 - **Handle with care:** backups contain pupils' personal data and password hashes. Never commit them to Git (`backups/` is already in `.gitignore`), and store downloaded copies securely.
 
+### Database migrations
+
+The database structure is changed only through **migrations**: numbered files in `server/migrations/`, applied in order. A table called `SequelizeMeta` records which ones have run, so each change is applied once and **existing data is kept**. The server applies any new migrations automatically when it starts.
+
+```bash
+cd server
+npm run migrate:status          # what has run and what is pending
+npm run migrate                 # apply pending migrations
+npm run migrate:create add-blood-group   # new empty migration to fill in
+npm run migrate:undo            # undo the most recent migration
+```
+
+**To change the database** (for example, add a column):
+
+1. Run `npm run migrate:create <short-name>` and fill in `up()`, plus a `down()` that reverses it.
+2. Make the same change to the model in `server/src/models/index.js`.
+3. Run `npm test`. A test compares every model with the migrated tables and fails if they don't match, so CI catches a forgotten migration.
+
+Never edit a migration that has already been merged, because other databases have already run it. Add a new migration instead. Take a backup before running migrations on the school's live data.
+
+Databases created before migrations were introduced are adopted automatically: the first migration sees that the tables exist and is simply recorded as done.
+
 ### Using MySQL
 
-In `server/.env`, set `DB_DIALECT=mysql` and fill in `DB_HOST`, `DB_NAME`, `DB_USER` and `DB_PASSWORD`. Create the empty database first. Tables are created automatically when the server starts.
+In `server/.env`, set `DB_DIALECT=mysql` and fill in `DB_HOST`, `DB_NAME`, `DB_USER` and `DB_PASSWORD`. Create the empty database first. The migrations create the tables when the server starts, or when you run `npm run migrate`.
+
+## Online demo on Render
+
+`render.yaml` sets up a free demo on [Render](https://render.com) that anyone can open in a browser:
+
+1. Sign in to Render with GitHub and choose **New → Blueprint**.
+2. Pick this repository; Render reads `render.yaml` and creates the `gvma-sms` web service.
+3. Wait for the first deploy, then open the `https://….onrender.com` address it shows and sign in with a demo account.
+
+Every push to `main` deploys again. The demo is for showing the system, not for real school data:
+- Each deploy builds a fresh database with the demo data. The free plan has no lasting disk, so changes made in the demo disappear when it redeploys or sleeps.
+- After 15 minutes without visitors the free service sleeps; the next visit takes about a minute to wake it.
+- Emails are only recorded in the Email Log, because no email account is configured.
+
+## Deploying for the school
+
+In production the API serves the built web app, so the school runs **one** Node.js server.
+
+**1. Build and install** on the server (Node.js 20 or newer):
+
+```bash
+cd client && npm ci && npm run build
+cd ../server && npm ci --omit=dev
+```
+
+**2. Configure `server/.env`.** Copy it from `.env.example`, then set at least:
+
+| Setting | Value |
+|---|---|
+| `NODE_ENV` | `production` |
+| `JWT_SECRET` | A long random string. Generate one with `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`. The server **refuses to start** without a strong one. |
+| `APP_URL` and `CLIENT_ORIGIN` | The portal's public address, e.g. `https://portal.gvma.example`, so links in emails work |
+| `SMTP_*`, `MAIL_FROM` | The school's email account, so emails are actually sent |
+| `TRUST_PROXY` | `1` if it runs behind Nginx, Caddy or a hosting platform |
+| `DB_*` | Keep SQLite for one small server, or set up MySQL |
+
+**3. Start it:**
+
+```bash
+cd server && npm start
+```
+
+Migrations run automatically on start. The first time, create the admin account with `npm run seed` on a test copy only (it wipes data), or add a real admin directly. For the live school, delete or deactivate the demo accounts.
+
+**4. Put it behind HTTPS.** Run a reverse proxy such as Caddy or Nginx in front of port 5000 with a free Let's Encrypt certificate, so passwords are encrypted in transit (SRS 4.2). Keep the Node process running with a service manager (systemd, PM2, or your hosting platform).
+
+At startup the server checks its settings. It **stops** if `JWT_SECRET` is missing or weak, and **warns** if email links point at localhost, the address isn't HTTPS, SMTP isn't set, or it's using SQLite.
+
+**Built-in protections:**
+- Security headers, including a Content-Security-Policy (Helmet)
+- Passwords hashed with bcrypt
+- After 10 failed sign-ins for one email from one address in 15 minutes, further attempts are refused for 15 minutes
+- Password reset requests are limited per address and per account
+- Sessions end after 30 minutes of inactivity
 
 ## API overview
 
