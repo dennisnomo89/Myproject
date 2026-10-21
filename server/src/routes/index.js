@@ -1,6 +1,7 @@
 const express = require('express');
 const { authenticate, authorize } = require('../middleware/auth');
 const { asyncHandler: h } = require('../utils/httpError');
+const { loginLimiter, resetLimiter } = require('../middleware/rateLimit');
 
 const auth = require('../controllers/authController');
 const users = require('../controllers/userController');
@@ -24,9 +25,9 @@ const finance = authorize('admin', 'bursar');
 router.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 // Authentication
-router.post('/auth/login', h(auth.login));
-router.post('/auth/forgot-password', h(auth.forgotPassword));
-router.post('/auth/reset-password', h(auth.resetPassword));
+router.post('/auth/login', loginLimiter, h(auth.login));
+router.post('/auth/forgot-password', resetLimiter, h(auth.forgotPassword));
+router.post('/auth/reset-password', resetLimiter, h(auth.resetPassword));
 router.use(authenticate);
 router.post('/auth/refresh', h(auth.refresh));
 router.get('/auth/me', h(auth.me));

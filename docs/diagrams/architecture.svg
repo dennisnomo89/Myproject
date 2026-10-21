@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620" font-family="Arial, Helvetica, sans-serif">
+<title>System architecture</title>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4b5d70"/></marker>
+</defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="550" y="36" font-size="20" font-weight="bold" fill="#174a6d" text-anchor="middle">System architecture</text>
+<rect x="30" y="90" width="150" height="70" rx="10" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.5"/>
+<text x="105" y="121.425" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Administrator</text><text x="105" y="137.675" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">web browser</text>
+<rect x="30" y="200" width="150" height="70" rx="10" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.5"/>
+<text x="105" y="231.425" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Teacher</text><text x="105" y="247.675" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">web browser</text>
+<rect x="30" y="310" width="150" height="70" rx="10" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.5"/>
+<text x="105" y="341.425" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Bursar</text><text x="105" y="357.675" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">web browser</text>
+<rect x="30" y="420" width="150" height="70" rx="10" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.5"/>
+<text x="105" y="451.425" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">Parent</text><text x="105" y="467.675" font-size="13" font-weight="normal" fill="#1d2733" text-anchor="middle">web browser</text>
+<rect x="240" y="90" width="220" height="400" rx="10" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="350" y="120" font-size="15" font-weight="bold" fill="#174a6d" text-anchor="middle">Web app (React)</text>
+<rect x="258" y="140" width="184" height="36" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="350" y="163" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">Login and dashboards</text>
+<rect x="258" y="187" width="184" height="36" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="350" y="210" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">Students, attendance</text>
+<rect x="258" y="234" width="184" height="36" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="350" y="257" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">Results, report cards</text>
+<rect x="258" y="281" width="184" height="36" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="350" y="304" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">Fees and receipts</text>
+<rect x="258" y="328" width="184" height="36" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="350" y="351" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">Timetable, calendar</text>
+<rect x="258" y="375" width="184" height="36" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="350" y="398" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">Messages, announcements</text>
+<rect x="258" y="422" width="184" height="36" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="350" y="445" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">Reports, backups</text>
+<rect x="530" y="90" width="270" height="400" rx="10" fill="#e6f0f8" stroke="#1f5f8b" stroke-width="1.5"/>
+<text x="665" y="120" font-size="15" font-weight="bold" fill="#174a6d" text-anchor="middle">API server (Node.js + Express)</text>
+<rect x="548" y="140" width="234" height="56" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="665" y="163" font-size="13" font-weight="bold" fill="#1d2733" text-anchor="middle">Security</text>
+<text x="665" y="182" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">HTTPS headers, rate limits, JWT login</text>
+<rect x="548" y="208" width="234" height="56" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="665" y="231" font-size="13" font-weight="bold" fill="#1d2733" text-anchor="middle">Access control</text>
+<text x="665" y="250" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">Roles and data scoping</text>
+<rect x="548" y="276" width="234" height="56" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="665" y="299" font-size="13" font-weight="bold" fill="#1d2733" text-anchor="middle">Controllers</text>
+<text x="665" y="318" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">One per module (REST /api)</text>
+<rect x="548" y="344" width="234" height="56" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="665" y="367" font-size="13" font-weight="bold" fill="#1d2733" text-anchor="middle">Sequelize models</text>
+<text x="665" y="386" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">Validation and relationships</text>
+<rect x="548" y="412" width="234" height="56" rx="6" fill="#ffffff" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="665" y="435" font-size="13" font-weight="bold" fill="#1d2733" text-anchor="middle">Services</text>
+<text x="665" y="454" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">Grading, email, backup, audit</text>
+<text x="665" y="478" font-size="10.5" font-weight="normal" fill="#5b6b7d" text-anchor="middle" font-style="italic">each request passes down these layers</text>
+<ellipse cx="960" cy="140" rx="100" ry="18" fill="#eef3e6" stroke="#6b8f3a" stroke-width="1.5"/>
+<path d="M860,140 L860,230 A100,18 0 0 0 1060,230 L1060,140" fill="#eef3e6" stroke="#6b8f3a" stroke-width="1.5"/>
+<ellipse cx="960" cy="140" rx="100" ry="18" fill="#eef3e6" stroke="#6b8f3a" stroke-width="1.5"/>
+<text x="960" y="181.2" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">Database</text><text x="960" y="196.2" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">SQLite (dev) / MySQL</text><text x="960" y="211.2" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">schema via migrations</text>
+<rect x="860" y="290" width="200" height="70" rx="10" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.5"/>
+<text x="960" y="321.7" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">Email server (SMTP)</text><text x="960" y="336.7" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">notifications, resets</text>
+<rect x="860" y="400" width="200" height="70" rx="10" fill="#fdf1d3" stroke="#f2b632" stroke-width="1.5"/>
+<text x="960" y="431.7" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">Backup files</text><text x="960" y="446.7" font-size="12" font-weight="normal" fill="#1d2733" text-anchor="middle">daily gzipped JSON</text>
+<line x1="180" y1="125" x2="238" y2="125" stroke="#4b5d70" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="180" y1="235" x2="238" y2="235" stroke="#4b5d70" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="180" y1="345" x2="238" y2="345" stroke="#4b5d70" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="180" y1="455" x2="238" y2="455" stroke="#4b5d70" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="460" y1="290" x2="528" y2="290" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<text x="494" y="278" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">JSON</text>
+<text x="494" y="310" font-size="11" font-weight="normal" fill="#5b6b7d" text-anchor="middle">over HTTPS</text>
+<line x1="800" y1="190" x2="858" y2="190" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<line x1="800" y1="325" x2="858" y2="325" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)"/>
+<line x1="800" y1="435" x2="858" y2="435" stroke="#4b5d70" stroke-width="1.6" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<rect x="240" y="525" width="820" height="60" rx="8" fill="#f4f6f9" stroke="#9fb3c8" stroke-width="1.5"/>
+<text x="650" y="559.2" font-size="12" font-weight="normal" fill="#5b6b7d" text-anchor="middle">GitHub repository + GitHub Actions CI: 75 automated tests on Node 22 and 24, lint and build on every push and pull request</text>
+</svg>

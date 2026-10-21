@@ -167,6 +167,60 @@ Databases created before migrations were introduced are adopted automatically: t
 
 In `server/.env`, set `DB_DIALECT=mysql` and fill in `DB_HOST`, `DB_NAME`, `DB_USER` and `DB_PASSWORD`. Create the empty database first. The migrations create the tables when the server starts, or when you run `npm run migrate`.
 
+## Online demo on Render
+
+`render.yaml` sets up a free demo on [Render](https://render.com) that anyone can open in a browser:
+
+1. Sign in to Render with GitHub and choose **New → Blueprint**.
+2. Pick this repository; Render reads `render.yaml` and creates the `gvma-sms` web service.
+3. Wait for the first deploy, then open the `https://….onrender.com` address it shows and sign in with a demo account.
+
+Every push to `main` deploys again. The demo is for showing the system, not for real school data:
+- Each deploy builds a fresh database with the demo data. The free plan has no lasting disk, so changes made in the demo disappear when it redeploys or sleeps.
+- After 15 minutes without visitors the free service sleeps; the next visit takes about a minute to wake it.
+- Emails are only recorded in the Email Log, because no email account is configured.
+
+## Deploying for the school
+
+In production the API serves the built web app, so the school runs **one** Node.js server.
+
+**1. Build and install** on the server (Node.js 20 or newer):
+
+```bash
+cd client && npm ci && npm run build
+cd ../server && npm ci --omit=dev
+```
+
+**2. Configure `server/.env`.** Copy it from `.env.example`, then set at least:
+
+| Setting | Value |
+|---|---|
+| `NODE_ENV` | `production` |
+| `JWT_SECRET` | A long random string. Generate one with `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`. The server **refuses to start** without a strong one. |
+| `APP_URL` and `CLIENT_ORIGIN` | The portal's public address, e.g. `https://portal.gvma.example`, so links in emails work |
+| `SMTP_*`, `MAIL_FROM` | The school's email account, so emails are actually sent |
+| `TRUST_PROXY` | `1` if it runs behind Nginx, Caddy or a hosting platform |
+| `DB_*` | Keep SQLite for one small server, or set up MySQL |
+
+**3. Start it:**
+
+```bash
+cd server && npm start
+```
+
+Migrations run automatically on start. The first time, create the admin account with `npm run seed` on a test copy only (it wipes data), or add a real admin directly. For the live school, delete or deactivate the demo accounts.
+
+**4. Put it behind HTTPS.** Run a reverse proxy such as Caddy or Nginx in front of port 5000 with a free Let's Encrypt certificate, so passwords are encrypted in transit (SRS 4.2). Keep the Node process running with a service manager (systemd, PM2, or your hosting platform).
+
+At startup the server checks its settings. It **stops** if `JWT_SECRET` is missing or weak, and **warns** if email links point at localhost, the address isn't HTTPS, SMTP isn't set, or it's using SQLite.
+
+**Built-in protections:**
+- Security headers, including a Content-Security-Policy (Helmet)
+- Passwords hashed with bcrypt
+- After 10 failed sign-ins for one email from one address in 15 minutes, further attempts are refused for 15 minutes
+- Password reset requests are limited per address and per account
+- Sessions end after 30 minutes of inactivity
+
 ## API overview
 
 All endpoints are under `/api` and, except login, need an `Authorization: Bearer <token>` header.

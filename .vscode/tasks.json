@@ -1,0 +1,13 @@
+{
+  // Run these from Terminal > Run Task... (or Ctrl+Shift+P, "Tasks: Run Task").
+  "version": "2.0.0",
+  "options": { "cwd": "${workspaceFolder}/docs/build" },
+  "tasks": [
+    { "label": "Docs: install build tools", "type": "shell", "command": "npm install", "problemMatcher": [] },
+    { "label": "Docs: build diagrams", "type": "shell", "command": "npm run diagrams", "problemMatcher": [] },
+    { "label": "Docs: take screenshots", "detail": "Start the API and web app first", "type": "shell", "command": "npm run screenshots", "problemMatcher": [] },
+    { "label": "Docs: build report", "type": "shell", "command": "npm run report", "problemMatcher": [] },
+    { "label": "Docs: build presentation", "type": "shell", "command": "npm run deck", "problemMatcher": [] },
+    { "label": "Docs: build everything", "type": "shell", "command": "npm run all", "group": { "kind": "build", "isDefault": true }, "problemMatcher": [] }
+  ]
+}
