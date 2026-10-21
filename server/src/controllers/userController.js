@@ -44,6 +44,7 @@ exports.update = async (req, res) => {
   if (password) {
     if (password.length < MIN_PASSWORD_LENGTH) throw new HttpError(400, 'Password is too short');
     changes.passwordHash = await bcrypt.hash(password, 10);
+    changes.passwordChangedAt = new Date(); // signs the user out everywhere
   }
   await user.update(changes);
   await audit(req, 'update_user', { id: user.id, fields: Object.keys(changes) });

@@ -2,17 +2,20 @@
 // Usage: npm run seed   (all demo accounts use the password below)
 const bcrypt = require('bcryptjs');
 const models = require('./models');
+const { migrate } = require('./db/migrator');
 
 const DEMO_PASSWORD = 'Password123';
 
 const {
   sequelize, User, AcademicSession, Term, SchoolClass, Subject, ClassSubject, Student,
   StudentParent, Attendance, Score, Observation, ReportRemark, FeeItem, Payment, Announcement,
-  TimetableSlot, SchoolEvent,
+  TimetableSlot, SchoolEvent, Conversation, Message,
 } = models;
 
 async function seed() {
-  await sequelize.sync({ force: true });
+  // Start from an empty database built by the migrations, exactly as production would be.
+  await sequelize.getQueryInterface().dropAllTables();
+  await migrate({ quiet: true });
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 10);
   const mkUser = (fullName, email, role, phone) => User.create({ fullName, email, role, phone, passwordHash });
 
@@ -127,6 +130,21 @@ async function seed() {
     { title: 'First term examinations', category: 'exam', startDate: '2026-12-07', endDate: '2026-12-11', audience: 'all', createdById: admin.id },
     { title: 'Christmas carol service', category: 'activity', startDate: '2026-12-16', endDate: '2026-12-16', audience: 'all', createdById: admin.id },
     { title: 'End of first term', category: 'holiday', startDate: '2026-12-18', endDate: '2026-12-18', audience: 'all', createdById: admin.id },
+  ]);
+
+  // A short conversation between Chiamaka's class teacher and her father.
+  const convo = await Conversation.create({
+    subject: "Chiamaka's reading progress",
+    parentId: p1.id,
+    staffId: t1.id,
+    StudentId: students[0].id,
+    lastMessageAt: new Date('2026-10-15T14:05:00'),
+    staffLastReadAt: new Date('2026-10-15T14:05:00'),
+  });
+  await Message.bulkCreate([
+    { ConversationId: convo.id, senderId: t1.id, body: 'Good afternoon Mr. Johnson. Chiamaka has been doing really well with her phonics this week. Reading a short story with her at home each evening would help her keep it up.', createdAt: new Date('2026-10-14T15:30:00') },
+    { ConversationId: convo.id, senderId: p1.id, body: 'Thank you, Miss Nwosu. We will start reading together every evening. Is there a particular book you recommend?', createdAt: new Date('2026-10-15T08:10:00') },
+    { ConversationId: convo.id, senderId: t1.id, body: 'The "Letterland" readers are perfect for her level. I will send one home in her bag on Friday.', createdAt: new Date('2026-10-15T14:05:00') },
   ]);
 
   await Announcement.bulkCreate([

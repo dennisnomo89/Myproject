@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { api } from '../services/api'
+import { api, setToken } from '../services/api'
 import { label } from '../services/format'
 import { Alert, Card, Field, PageHeader } from '../components/ui'
 
@@ -26,9 +26,10 @@ export default function Profile() {
       return setMsg({ ...msg, password: { type: 'error', text: 'The new passwords do not match' } })
     }
     try {
-      await api.post('/auth/change-password', { currentPassword: pw.currentPassword, newPassword: pw.newPassword })
+      const res = await api.post('/auth/change-password', { currentPassword: pw.currentPassword, newPassword: pw.newPassword })
+      setToken(res.token) // the old token stops working once the password changes
       setPw({ currentPassword: '', newPassword: '', confirm: '' })
-      setMsg({ ...msg, password: { type: 'success', text: 'Password changed' } })
+      setMsg({ ...msg, password: { type: 'success', text: res.message } })
     } catch (err) {
       setMsg({ ...msg, password: { type: 'error', text: err.message } })
     }

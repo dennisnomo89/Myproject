@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext'
 import Layout from './components/Layout'
 import { Loading } from './components/ui'
 import Login from './pages/Login'
+import ResetPassword, { ForgotPassword } from './pages/ResetPassword'
 import Dashboard from './pages/Dashboard'
 import Students from './pages/Students'
 import StudentDetail from './pages/StudentDetail'
@@ -19,6 +20,9 @@ import AuditLog from './pages/AuditLog'
 import EmailLog from './pages/EmailLog'
 import Timetable from './pages/Timetable'
 import Calendar from './pages/Calendar'
+import Messages from './pages/Messages'
+import Backups from './pages/Backups'
+import Reports from './pages/Reports'
 import Profile from './pages/Profile'
 
 function RequireRole({ roles, children }) {
@@ -33,6 +37,8 @@ export default function App() {
   if (!user) {
     return (
       <Routes>
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<Login />} />
       </Routes>
     )
@@ -56,10 +62,14 @@ export default function App() {
         <Route path="announcements" element={<Announcements />} />
         <Route path="timetable" element={<Timetable />} />
         <Route path="calendar" element={<Calendar />} />
+        <Route path="messages" element={<Messages />} />
+        <Route path="messages/:id" element={<Messages />} />
         <Route path="users" element={<RequireRole roles={['admin']}><Users /></RequireRole>} />
         <Route path="settings" element={<RequireRole roles={['admin']}><Settings /></RequireRole>} />
         <Route path="audit-log" element={<RequireRole roles={['admin']}><AuditLog /></RequireRole>} />
         <Route path="email-log" element={<RequireRole roles={['admin']}><EmailLog /></RequireRole>} />
+        <Route path="backups" element={<RequireRole roles={['admin']}><Backups /></RequireRole>} />
+        <Route path="reports" element={<RequireRole roles={['admin', 'bursar']}><Reports /></RequireRole>} />
         <Route path="profile" element={<Profile />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

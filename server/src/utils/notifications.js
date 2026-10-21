@@ -2,7 +2,7 @@
 // Sending happens in the background so the user's request is not slowed down.
 const { Op } = require('sequelize');
 const {
-  Student, User, Term, AcademicSession, FeeItem, Payment,
+  Student, User, Term, AcademicSession, FeeItem, Payment, Conversation,
 } = require('../models');
 const { sendEmail } = require('./mailer');
 const templates = require('./emailTemplates');
@@ -86,6 +86,17 @@ exports.announcement = (announcement) => inBackground((async () => {
     await sendEmail({ to: user.email, user, event: 'announcement', ...templates.announcement({ user, announcement }) });
   }
   return users.length;
+})());
+
+exports.newMessage = ({ conversationId, senderId, recipientId, body }) => inBackground((async () => {
+  const [recipient, sender, conversation] = await Promise.all([
+    User.findOne({ where: { id: recipientId, ...wantsEmail } }),
+    User.findByPk(senderId),
+    Conversation.findByPk(conversationId),
+  ]);
+  if (!recipient) return 0;
+  await sendEmail({ to: recipient.email, user: recipient, event: 'new_message', ...templates.newMessage({ recipient, sender, conversation, body }) });
+  return 1;
 })());
 
 exports.flush = flush;

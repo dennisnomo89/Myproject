@@ -17,6 +17,10 @@ const authenticate = asyncHandler(async (req, res, next) => {
 
   const user = await User.findByPk(payload.id);
   if (!user || !user.isActive) throw new HttpError(401, 'Account not found or deactivated');
+  // Tokens issued before the last password change are no longer valid (iat is in whole seconds).
+  if (user.passwordChangedAt && payload.iat < Math.floor(user.passwordChangedAt.getTime() / 1000)) {
+    throw new HttpError(401, 'Your password was changed. Please log in again.');
+  }
   req.user = user;
   next();
 });
