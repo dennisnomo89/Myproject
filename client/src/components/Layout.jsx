@@ -15,12 +15,14 @@ const NAV = [
   { to: '/timetable', text: 'Timetable', roles: ['admin', 'teacher', 'bursar', 'parent'] },
   { to: '/calendar', text: 'Calendar', roles: ['admin', 'teacher', 'bursar', 'parent'] },
   { to: '/fees', text: 'Fees', roles: ['admin', 'bursar'] },
+  { to: '/reports', text: 'Reports', roles: ['admin', 'bursar'] },
   { to: '/classes', text: 'Classes & Subjects', roles: ['admin'] },
   { to: '/announcements', text: 'Announcements', roles: ['admin', 'teacher', 'bursar', 'parent'] },
   { to: '/users', text: 'Users', roles: ['admin'] },
   { to: '/settings', text: 'Sessions & Terms', roles: ['admin'] },
   { to: '/email-log', text: 'Email Log', roles: ['admin'] },
   { to: '/audit-log', text: 'Audit Log', roles: ['admin'] },
+  { to: '/backups', text: 'Data Backup', roles: ['admin'] },
 ]
 
 const UNREAD_POLL_MS = 60_000

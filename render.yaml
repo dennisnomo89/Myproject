@@ -1,0 +1,25 @@
+# Render Blueprint for the free online demo (see "Online demo on Render" in the README).
+# The demo database is built and filled with demo data during each deploy. Render's free
+# plan has no lasting disk, so changes made in the demo are lost when it redeploys or
+# goes to sleep, and the demo data comes back.
+services:
+  - type: web
+    name: gvma-sms
+    runtime: node
+    plan: free
+    buildCommand: >-
+      cd client && npm ci --include=dev && npm run build &&
+      cd ../server && npm ci --omit=dev && npm run seed
+    startCommand: cd server && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: TRUST_PROXY
+        value: "1"
+      - key: DB_STORAGE
+        value: ./data/demo.sqlite
