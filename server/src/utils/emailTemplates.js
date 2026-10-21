@@ -74,7 +74,20 @@ exports.paymentReceived = ({ parent, student, payment, balance }) => ({
   }),
 });
 
-exports.newMessage = ({ recipient, sender, conversation, body }) => ({
+exports.passwordReset = ({ user, token, minutes }) => ({
+  subject: 'Reset your school portal password',
+  ...render({
+    greeting: `Dear ${user.fullName},`,
+    paragraphs: [
+      'We received a request to reset the password for your account on the school portal.',
+      `Use the button below to choose a new password. The link works once and expires in ${minutes} minutes.`,
+      'If you did not ask for this, you can ignore this email. Your password will not change.',
+    ],
+    button: { label: 'Reset password', url: `${appUrl}/reset-password?token=${token}` },
+  }),
+});
+
+exports.newMessage =({ recipient, sender, conversation, body }) => ({
   subject: `New message from ${sender.fullName}: ${conversation.subject}`,
   ...render({
     greeting: `Dear ${recipient.fullName},`,

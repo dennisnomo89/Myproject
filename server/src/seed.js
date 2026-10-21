@@ -2,6 +2,7 @@
 // Usage: npm run seed   (all demo accounts use the password below)
 const bcrypt = require('bcryptjs');
 const models = require('./models');
+const { migrate } = require('./db/migrator');
 
 const DEMO_PASSWORD = 'Password123';
 
@@ -12,7 +13,9 @@ const {
 } = models;
 
 async function seed() {
-  await sequelize.sync({ force: true });
+  // Start from an empty database built by the migrations, exactly as production would be.
+  await sequelize.getQueryInterface().dropAllTables();
+  await migrate({ quiet: true });
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 10);
   const mkUser = (fullName, email, role, phone) => User.create({ fullName, email, role, phone, passwordHash });
 
