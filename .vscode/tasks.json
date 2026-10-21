@@ -1,13 +1,107 @@
 {
   // Run these from Terminal > Run Task... (or Ctrl+Shift+P, "Tasks: Run Task").
+  // "App:" tasks work on the school management app, "Docs:" tasks on the report and slides.
   "version": "2.0.0",
-  "options": { "cwd": "${workspaceFolder}/docs/build" },
   "tasks": [
-    { "label": "Docs: install build tools", "type": "shell", "command": "npm install", "problemMatcher": [] },
-    { "label": "Docs: build diagrams", "type": "shell", "command": "npm run diagrams", "problemMatcher": [] },
-    { "label": "Docs: take screenshots", "detail": "Start the API and web app first", "type": "shell", "command": "npm run screenshots", "problemMatcher": [] },
-    { "label": "Docs: build report", "type": "shell", "command": "npm run report", "problemMatcher": [] },
-    { "label": "Docs: build presentation", "type": "shell", "command": "npm run deck", "problemMatcher": [] },
-    { "label": "Docs: build everything", "type": "shell", "command": "npm run all", "group": { "kind": "build", "isDefault": true }, "problemMatcher": [] }
+    // ---------- App ----------
+    {
+      "label": "App: install dependencies",
+      "detail": "Run once after cloning, and again when package.json changes",
+      "type": "shell",
+      "command": "npm install; cd ../client; npm install",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "problemMatcher": []
+    },
+    {
+      "label": "App: reset demo data",
+      "detail": "Wipes the development database and fills it with the demo accounts",
+      "type": "shell",
+      "command": "npm run seed",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "problemMatcher": []
+    },
+    {
+      "label": "App: start API",
+      "detail": "Express API on http://localhost:5000, restarts on save",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "isBackground": true,
+      "presentation": { "group": "app", "panel": "dedicated" },
+      "problemMatcher": {
+        "pattern": { "regexp": "^__never_matches__$" },
+        "background": { "beginsPattern": "starting `node", "endsPattern": "GVMA SMS running on" }
+      }
+    },
+    {
+      "label": "App: start web app",
+      "detail": "React web app on http://localhost:5173",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": { "cwd": "${workspaceFolder}/client" },
+      "isBackground": true,
+      "presentation": { "group": "app", "panel": "dedicated" },
+      "problemMatcher": {
+        "pattern": { "regexp": "^__never_matches__$" },
+        "background": { "beginsPattern": "VITE", "endsPattern": "Local:" }
+      }
+    },
+    {
+      "label": "App: start (API + web app)",
+      "detail": "Starts both; then open http://localhost:5173",
+      "dependsOn": ["App: start API", "App: start web app"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    },
+    {
+      "label": "App: run tests",
+      "detail": "All API tests (Jest)",
+      "type": "shell",
+      "command": "npm test",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "App: lint web app",
+      "type": "shell",
+      "command": "npm run lint",
+      "options": { "cwd": "${workspaceFolder}/client" },
+      "problemMatcher": []
+    },
+    {
+      "label": "App: build web app for production",
+      "detail": "Writes client/dist, which the API serves in production",
+      "type": "shell",
+      "command": "npm run build",
+      "options": { "cwd": "${workspaceFolder}/client" },
+      "problemMatcher": []
+    },
+    {
+      "label": "App: database migration status",
+      "type": "shell",
+      "command": "npm run migrate:status",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "problemMatcher": []
+    },
+    {
+      "label": "App: new database migration",
+      "detail": "Creates a migration file in server/migrations",
+      "type": "shell",
+      "command": "npm run migrate:create -- ${input:migrationName}",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "problemMatcher": []
+    },
+
+    // ---------- Docs ----------
+    { "label": "Docs: install build tools", "type": "shell", "command": "npm install", "options": { "cwd": "${workspaceFolder}/docs/build" }, "problemMatcher": [] },
+    { "label": "Docs: build diagrams", "type": "shell", "command": "npm run diagrams", "options": { "cwd": "${workspaceFolder}/docs/build" }, "problemMatcher": [] },
+    { "label": "Docs: take screenshots", "detail": "Start the API and web app first", "type": "shell", "command": "npm run screenshots", "options": { "cwd": "${workspaceFolder}/docs/build" }, "problemMatcher": [] },
+    { "label": "Docs: build report", "type": "shell", "command": "npm run report", "options": { "cwd": "${workspaceFolder}/docs/build" }, "problemMatcher": [] },
+    { "label": "Docs: build presentation", "type": "shell", "command": "npm run deck", "options": { "cwd": "${workspaceFolder}/docs/build" }, "problemMatcher": [] },
+    { "label": "Docs: build everything", "type": "shell", "command": "npm run all", "options": { "cwd": "${workspaceFolder}/docs/build" }, "group": { "kind": "build", "isDefault": true }, "problemMatcher": [] }
+  ],
+  "inputs": [
+    { "id": "migrationName", "type": "promptString", "description": "Migration name, e.g. add-pupil-photo" }
   ]
 }

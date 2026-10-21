@@ -1,0 +1,22 @@
+{
+  // Shared editor settings for everyone working on the project.
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  // Keep generated and installed files out of search and the file tree.
+  "search.exclude": {
+    "**/node_modules": true,
+    "client/dist": true,
+    "server/data": true,
+    "server/backups": true,
+    "**/package-lock.json": true
+  },
+  "files.exclude": {
+    "**/node_modules": true
+  },
+
+  "npm.packageManager": "npm",
+  "debug.javascript.autoAttachFilter": "onlyWithFlag"
+}
