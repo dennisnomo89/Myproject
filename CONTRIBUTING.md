@@ -19,7 +19,7 @@ Your commit email must match an email on your GitHub account, or your commits wi
 3. Commit small, focused changes often:
    `git add .` then `git commit -m "Add daily attendance form for teachers"`
 4. Push your branch: `git push -u origin feature/attendance-module`
-5. Open a Pull Request on GitHub and ask another member to review it.
+5. Open a Pull Request on GitHub and ask another member to review it. Wait for the automatic checks (CI) to show ✓. Before pushing, you can run the same tests yourself with `cd server && npm test`.
 6. After approval, merge into `main` and delete the branch.
 
 ## Branch names
@@ -34,6 +34,7 @@ Write in the imperative and say what changed: `Add parent dashboard`, `Fix grade
 
 ## Rules
 
+- Change the database only through a migration (`npm run migrate:create <name>`), together with the matching model change. Never edit a migration that is already on `main`.
 - Never commit `.env` files, passwords or database dumps containing real pupil data.
 - Do not push directly to `main`; use pull requests.
 - Do not upload work on behalf of another member: they must commit it themselves.
