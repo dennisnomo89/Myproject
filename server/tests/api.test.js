@@ -541,6 +541,78 @@ describe('password reset and sessions', () => {
   });
 });
 
+describe('reports', () => {
+  const { toCsv } = require('../src/utils/csv');
+
+  test('enrolment counts active pupils by class and gender', async () => {
+    const res = await api('admin').get('/api/reports/enrolment');
+    expect(res.status).toBe(200);
+    const active = await Student.count({ where: { status: 'active' } });
+    expect(res.body.totals.total).toBe(active);
+    expect(res.body.totals.female + res.body.totals.male).toBe(active);
+    expect(res.body.rows.map((r) => r.class)).toEqual(expect.arrayContaining(['Nursery 2 A', 'Primary 1 A']));
+  });
+
+  test('attendance summary uses the term dates and calculates rates', async () => {
+    const res = await api('admin').get(`/api/reports/attendance?classId=${nursery.id}&termId=${term.id}`);
+    expect(res.status).toBe(200);
+    expect(res.body.subtitle).toMatch(/2026-09-14 to 2026-12-18/);
+    const row = res.body.rows[0];
+    expect(row.present + row.late + row.absent + row.excused).toBe(row.days);
+    expect(row.rate).toBe(Math.round(((row.present + row.late) / row.days) * 100));
+    expect(res.body.rows.every((r) => r.class === 'Nursery 2 A')).toBe(true);
+  });
+
+  test('attendance rejects a backwards date range', async () => {
+    const res = await api('admin').get('/api/reports/attendance?from=2026-10-10&to=2026-10-01');
+    expect(res.status).toBe(400);
+  });
+
+  test('performance gives averages, grades and positions that match the report card', async () => {
+    const res = await api('admin').get(`/api/reports/performance?termId=${term.id}&classId=${nursery.id}`);
+    expect(res.status).toBe(200);
+    const chiamaka = await Student.findOne({ where: { firstName: 'Chiamaka' } });
+    const row = res.body.rows.find((r) => r.admissionNo === chiamaka.admissionNo);
+    const card = (await api('admin').get(`/api/results/report/${chiamaka.id}?termId=${term.id}`)).body;
+    expect(row.average).toBe(card.summary.average);
+    expect(row.grade).toBe(card.summary.grade);
+    expect(row.position).toBe(`${card.summary.position} of ${card.summary.classSize}`);
+  });
+
+  test('fee report totals match the individual statements', async () => {
+    const res = await api('bursar').get(`/api/reports/fees?termId=${term.id}`);
+    expect(res.status).toBe(200);
+    const sum = res.body.rows.reduce((a, r) => a + r.balance, 0);
+    expect(res.body.totals.balance).toBeCloseTo(sum, 2);
+    const david = res.body.rows.find((r) => r.pupil === 'Johnson David');
+    expect(david.status).toBe('Part paid');
+  });
+
+  test('CSV export downloads with headers, totals and Excel-friendly encoding', async () => {
+    const res = await api('admin').get(`/api/reports/fees?termId=${term.id}&format=csv`);
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toMatch(/text\/csv/);
+    expect(res.headers['content-disposition']).toMatch(/attachment; filename="gvma-fees-report-.*\.csv"/);
+    expect(res.text.charCodeAt(0)).toBe(0xfeff);
+    const lines = res.text.slice(1).trim().split('\r\n');
+    expect(lines[0]).toBe('Class,Admission no.,Pupil,Billed (NGN),Paid (NGN),Balance (NGN),Status');
+    expect(lines[lines.length - 1]).toMatch(/^All pupils,/);
+  });
+
+  test('CSV cells are quoted and protected against spreadsheet formulas', () => {
+    const csv = toCsv([{ key: 'a', label: 'A' }, { key: 'b', label: 'B' }], [{ a: 'Okon, "Sam"', b: '=HYPERLINK("x")' }, { a: -5, b: null }]);
+    expect(csv).toBe('﻿A,B\r\n"Okon, ""Sam""","\'=HYPERLINK(""x"")"\r\n-5,\r\n');
+  });
+
+  test('each role only sees its permitted reports', async () => {
+    expect((await api('bursar').get('/api/reports')).body).toEqual(['enrolment', 'fees']);
+    expect((await api('bursar').get('/api/reports/performance')).status).toBe(403);
+    expect((await api('ada').get('/api/reports/enrolment')).status).toBe(403);
+    expect((await api('parent').get('/api/reports')).status).toBe(403);
+    expect((await api('admin').get('/api/reports/nonsense')).status).toBe(404);
+  });
+});
+
 describe('dashboard', () => {
   test('returns role-specific data', async () => {
     expect((await api('admin').get('/api/dashboard')).body.stats.students).toBe(await Student.count({ where: { status: 'active' } }));

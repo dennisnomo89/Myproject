@@ -1,0 +1,20 @@
+{
+  "name": "gvma-docs-build",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Builds the GVMA School Management System report, presentation, diagrams and screenshots",
+  "scripts": {
+    "diagrams": "node diagrams.js",
+    "screenshots": "node screenshots.js",
+    "report": "node report.js && powershell -NoProfile -ExecutionPolicy Bypass -File update-toc.ps1",
+    "deck": "node deck.js",
+    "all": "npm run diagrams && npm run report && npm run deck"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "docx": "^9.13.0",
+    "jszip": "^3.10.1",
+    "pptxgenjs": "^3.12.0",
+    "puppeteer-core": "^23.11.1"
+  }
+}

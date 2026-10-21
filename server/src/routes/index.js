@@ -1,6 +1,7 @@
 const express = require('express');
 const { authenticate, authorize } = require('../middleware/auth');
 const { asyncHandler: h } = require('../utils/httpError');
+const { loginLimiter, resetLimiter } = require('../middleware/rateLimit');
 
 const auth = require('../controllers/authController');
 const users = require('../controllers/userController');
@@ -14,6 +15,7 @@ const dashboard = require('../controllers/dashboardController');
 const timetable = require('../controllers/timetableController');
 const messages = require('../controllers/messageController');
 const backups = require('../controllers/backupController');
+const reports = require('../controllers/reportController');
 
 const router = express.Router();
 const admin = authorize('admin');
@@ -23,9 +25,9 @@ const finance = authorize('admin', 'bursar');
 router.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 // Authentication
-router.post('/auth/login', h(auth.login));
-router.post('/auth/forgot-password', h(auth.forgotPassword));
-router.post('/auth/reset-password', h(auth.resetPassword));
+router.post('/auth/login', loginLimiter, h(auth.login));
+router.post('/auth/forgot-password', resetLimiter, h(auth.forgotPassword));
+router.post('/auth/reset-password', resetLimiter, h(auth.resetPassword));
 router.use(authenticate);
 router.post('/auth/refresh', h(auth.refresh));
 router.get('/auth/me', h(auth.me));
@@ -110,6 +112,10 @@ router.get('/messages', h(messages.listConversations));
 router.post('/messages', h(messages.startConversation));
 router.get('/messages/:id', h(messages.getConversation));
 router.post('/messages/:id', h(messages.reply));
+
+// Reports (each report checks its own allowed roles)
+router.get('/reports', finance, h(reports.list));
+router.get('/reports/:type', finance, h(reports.show));
 
 // Data backup (admin only)
 router.get('/backups', admin, h(backups.list));

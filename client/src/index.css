@@ -314,9 +314,22 @@ button.slot-card:hover { border-color: var(--brand); }
 .signatures { display: flex; justify-content: space-between; gap: 2rem; margin-top: 3rem; }
 .signatures span { flex: 1; border-top: 1px solid var(--text); padding-top: 0.3rem; font-size: 0.85rem; color: var(--muted); text-align: center; }
 
+.toolbar .spacer { flex: 1; }
+.toolbar .field { flex-direction: row; align-items: center; gap: 0.4rem; }
+.print-only { display: none; }
+.report-view td, .report-view th { white-space: nowrap; }
+
 @media print {
   body, :root { background: #fff; }
   .no-print { display: none !important; }
+  /* Reports page: print just the report, without the app chrome. */
+  .app { display: block; }
+  .topbar, .sidebar, .page-header { display: none !important; }
+  .content { padding: 0; }
+  .printable-report { border: 0; box-shadow: none; padding: 0; }
+  .print-only { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem; }
+  .table-wrap { overflow: visible; }
+  .report-view { font-size: 11px; }
   .print-page { padding: 0; max-width: none; }
   .report { border: 0; padding: 0; margin: 0; }
 }

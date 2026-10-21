@@ -1,6 +1,6 @@
 -- Original design schema for the School Management Software (MySQL), kept for the project report.
--- The live tables are created from the Sequelize models in server/src/models/index.js,
--- which are the source of truth (they add terms.resultsPublished, observations, report remarks, etc.).
+-- The live tables are created by the migrations in server/migrations/ and must match the
+-- Sequelize models in server/src/models/index.js (they add terms.resultsPublished, observations, etc.).
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
