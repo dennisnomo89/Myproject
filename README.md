@@ -19,7 +19,7 @@ The full requirements are in the [Software Requirements Specification](docs/SRS_
 | Fees | Fee structures, invoices, payments, receipts, outstanding balances |
 | Communication | Announcements, plus private messages between parents and staff. Teachers can message parents of pupils in their classes; parents can message their children's teachers and the school office. There's an unread badge in the sidebar, and new messages are emailed. |
 | Email notifications | Parents are emailed when results are published, when a payment is recorded, when the bursar sends fee reminders, and for announcements. Each user can opt out on their profile. |
-| Reports | Enrolment, attendance, performance and fee-collection reports |
+| Reports | **Reports** page with enrolment by class and gender, attendance summary (term or chosen dates), academic performance (average, grade and position in class) and fee collection (billed, paid, balance). Filter by term and class, then view on screen, print, or download as a CSV file that opens in Excel. The bursar sees the enrolment and fee reports. |
 | Data backup | Automatic daily backups (the newest 14 are kept), "Back up now", download, and restore with typed confirmation. A safety backup is taken automatically before every restore. |
 
 ## Tech stack
@@ -152,6 +152,7 @@ All endpoints are under `/api` and, except login, need an `Authorization: Bearer
 | Events | `GET /events?from=&to=`, `POST /events`, `PATCH/DELETE /events/:id` |
 | Messages | `GET /messages/contacts`, `GET /messages/unread-count`, `GET/POST /messages`, `GET/POST /messages/:id` |
 | Notifications | `POST /fees/reminders`, `GET /email-log` |
+| Reports | `GET /reports`, `GET /reports/:type?termId=&classId=&from=&to=&format=csv` (type: `enrolment`, `attendance`, `performance`, `fees`) |
 | Backups | `GET/POST /backups`, `GET /backups/:name/download`, `POST /backups/:name/restore`, `DELETE /backups/:name` |
 | Other | `GET /dashboard`, `GET /audit-log`, `GET/POST/DELETE /announcements` |
 

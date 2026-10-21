@@ -176,3 +176,5 @@ exports.debtors = async (req, res) => {
   }
   res.json(rows);
 };
+
+exports.statementFor = statementFor;

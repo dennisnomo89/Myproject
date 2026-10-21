@@ -14,6 +14,7 @@ const dashboard = require('../controllers/dashboardController');
 const timetable = require('../controllers/timetableController');
 const messages = require('../controllers/messageController');
 const backups = require('../controllers/backupController');
+const reports = require('../controllers/reportController');
 
 const router = express.Router();
 const admin = authorize('admin');
@@ -110,6 +111,10 @@ router.get('/messages', h(messages.listConversations));
 router.post('/messages', h(messages.startConversation));
 router.get('/messages/:id', h(messages.getConversation));
 router.post('/messages/:id', h(messages.reply));
+
+// Reports (each report checks its own allowed roles)
+router.get('/reports', finance, h(reports.list));
+router.get('/reports/:type', finance, h(reports.show));
 
 // Data backup (admin only)
 router.get('/backups', admin, h(backups.list));
