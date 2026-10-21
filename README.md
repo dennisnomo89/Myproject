@@ -167,6 +167,24 @@ Databases created before migrations were introduced are adopted automatically: t
 
 In `server/.env`, set `DB_DIALECT=mysql` and fill in `DB_HOST`, `DB_NAME`, `DB_USER` and `DB_PASSWORD`. Create the empty database first. The migrations create the tables when the server starts, or when you run `npm run migrate`.
 
+## Working in VS Code
+
+Open the `myproject` folder in VS Code (**File → Open Folder**). It offers to install the recommended extensions (Oxc for linting, SQLite Viewer for looking inside the database); accept them.
+
+**Tasks** (**Terminal → Run Task…**):
+
+| Task | What it does |
+|---|---|
+| App: install dependencies | `npm install` in `server/` and `client/` (once, and after package.json changes) |
+| App: reset demo data | Fills the development database with the demo accounts |
+| App: start (API + web app) | Starts the API on port 5000 and the web app on port 5173, each in its own terminal |
+| App: run tests | All API tests (also **Ctrl+Shift+P → Tasks: Run Test Task**) |
+| App: lint web app / build web app for production | Lint the React code / write `client/dist` |
+| App: database migration status / new database migration | Check or create migrations |
+| Docs: … | Rebuild the report, slides and diagrams (**Ctrl+Shift+B** builds them all) |
+
+**Debugging** (**Run and Debug**, Ctrl+Shift+D, then F5): *Debug API* runs the server with breakpoints, *Debug all API tests* and *Debug the open test file* run Jest under the debugger, *Debug web app in Edge* opens the web app with breakpoints in the React code, and *Debug API + web app* does both at once.
+
 ## Online demo on Render
 
 `render.yaml` sets up a free demo on [Render](https://render.com) that anyone can open in a browser:

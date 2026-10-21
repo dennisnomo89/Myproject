@@ -1,0 +1,7 @@
+{
+  // VS Code offers to install these when the project is opened.
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "qwtel.sqlite-viewer"
+  ]
+}
