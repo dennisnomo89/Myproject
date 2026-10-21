@@ -7,6 +7,10 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
+    "migrate": "node src/db/cli.js up",
+    "migrate:status": "node src/db/cli.js status",
+    "migrate:undo": "node src/db/cli.js down",
+    "migrate:create": "node src/db/cli.js create",
     "seed": "node src/seed.js",
     "test": "jest --runInBand"
   },
@@ -27,7 +31,8 @@
     "mysql2": "^3.24.6",
     "nodemailer": "^10.1.7",
     "sequelize": "^6.37.8",
-    "sqlite3": "^6.0.1"
+    "sqlite3": "^6.0.1",
+    "umzug": "^3.8.3"
   },
   "devDependencies": {
     "jest": "^30.5.2",

@@ -60,7 +60,9 @@ school-management-system/
 │   │   ├── models/          # Sequelize models and relationships
 │   │   ├── routes/          # all API routes and who may call them
 │   │   ├── utils/           # grading scale, audit logging, errors
+│   │   ├── db/              # migration runner and command line
 │   │   └── seed.js          # demo data
+│   ├── migrations/          # numbered database changes, applied in order
 │   ├── tests/               # API tests
 │   └── .env.example
 ├── database/
@@ -81,7 +83,7 @@ cd school-management-system
 cd server
 cp .env.example .env      # defaults work for local development
 npm install
-npm run seed              # creates the SQLite database with demo data
+npm run seed              # builds a fresh database with demo data (wipes the dev database)
 npm run dev               # API on http://localhost:5000/api
 
 # 3. Frontend (in a second terminal)
@@ -139,9 +141,31 @@ Admins manage backups on the **Data Backup** page.
 - **Keep copies elsewhere:** download backups regularly and store them away from the server, for example on an external drive or a cloud drive. A backup that sits only on the server is lost if the server's disk fails.
 - **Handle with care:** backups contain pupils' personal data and password hashes. Never commit them to Git (`backups/` is already in `.gitignore`), and store downloaded copies securely.
 
+### Database migrations
+
+The database structure is changed only through **migrations**: numbered files in `server/migrations/`, applied in order. A table called `SequelizeMeta` records which ones have run, so each change is applied once and **existing data is kept**. The server applies any new migrations automatically when it starts.
+
+```bash
+cd server
+npm run migrate:status          # what has run and what is pending
+npm run migrate                 # apply pending migrations
+npm run migrate:create add-blood-group   # new empty migration to fill in
+npm run migrate:undo            # undo the most recent migration
+```
+
+**To change the database** (for example, add a column):
+
+1. Run `npm run migrate:create <short-name>` and fill in `up()`, plus a `down()` that reverses it.
+2. Make the same change to the model in `server/src/models/index.js`.
+3. Run `npm test`. A test compares every model with the migrated tables and fails if they don't match, so CI catches a forgotten migration.
+
+Never edit a migration that has already been merged, because other databases have already run it. Add a new migration instead. Take a backup before running migrations on the school's live data.
+
+Databases created before migrations were introduced are adopted automatically: the first migration sees that the tables exist and is simply recorded as done.
+
 ### Using MySQL
 
-In `server/.env`, set `DB_DIALECT=mysql` and fill in `DB_HOST`, `DB_NAME`, `DB_USER` and `DB_PASSWORD`. Create the empty database first. Tables are created automatically when the server starts.
+In `server/.env`, set `DB_DIALECT=mysql` and fill in `DB_HOST`, `DB_NAME`, `DB_USER` and `DB_PASSWORD`. Create the empty database first. The migrations create the tables when the server starts, or when you run `npm run migrate`.
 
 ## API overview
 

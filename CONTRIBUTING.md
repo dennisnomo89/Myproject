@@ -34,6 +34,7 @@ Write in the imperative and say what changed: `Add parent dashboard`, `Fix grade
 
 ## Rules
 
+- Change the database only through a migration (`npm run migrate:create <name>`), together with the matching model change. Never edit a migration that is already on `main`.
 - Never commit `.env` files, passwords or database dumps containing real pupil data.
 - Do not push directly to `main`; use pull requests.
 - Do not upload work on behalf of another member: they must commit it themselves.
